@@ -5,11 +5,40 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Born To Code</a>
-            <div class="input-group">
-                <div class="search input-group-text" id="basic-addon1">
-                    <img src="../assets/search.png" />
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="input-group">
+                    <div class="search input-group-text" id="basic-addon1">
+                        <img src="../assets/search.png" />
+                    </div>
+                    <input type="text" class="form-control" placeholder="Поиск" aria-label="Поиск" aria-describedby="basic-addon1">
                 </div>
-                <input type="text" class="form-control" placeholder="Поиск" aria-label="Поиск" aria-describedby="basic-addon1">
+                <div class="container-fluid ps-0">
+                    <ul class="btn-list navbar-nav d-flex justify-content-around me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <RouterLink to="/" class="buttons">
+                                <button class="btn btn-light">
+                                    <div class="d-flex align-items-center gap-1">
+                                        <img src="../assets/goal.png"/>
+                                        <span>Задачи</span>
+                                    </div>
+                                </button>
+                            </RouterLink>
+                        </li>
+                        <li class="nav-item">
+                            <RouterLink to="/" class="buttons">
+                                <button class="btn btn-light">
+                                    <div class="d-flex align-items-center gap-1">
+                                        <img src="../assets/avatar.png"/>
+                                        <span>Войти</span>
+                                    </div>
+                                </button>
+                            </RouterLink>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -20,6 +49,14 @@
     font-weight: 400;
     font-size: 36px;
     color: #393B44;
+}
+
+.input-group {
+    width: 150%;
+    
+    @media (max-width: 992px) {
+        width: 100%;
+    }
 }
 
 .search {
@@ -48,6 +85,29 @@
     &::placeholder {
         color: #8D93AB;
         font-weight: 500;
+    }
+}
+
+.btn-list {
+    @media (max-width: 992px) {
+        margin-top: 10px;
+        gap: 10px;
+    }
+}
+
+.buttons {
+    //gap: 200px;
+
+    button {
+        background-color: #F1F3F8;
+        border-color: #F1F3F8;
+        font-size: 18px;
+        color: #393B44;
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
     }
 }
 </style>
