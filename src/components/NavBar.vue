@@ -32,7 +32,7 @@
                                 <button class="btn btn-light">
                                     <div class="d-flex align-items-center gap-1">
                                         <img src="../assets/avatar.png"/>
-                                        <span>Войти</span>
+                                        <span>Вход</span>
                                     </div>
                                 </button>
                             </RouterLink>
@@ -45,6 +45,12 @@
 </template>
 
 <style scoped lang="scss">
+.navbar-toggler {
+    &:focus {
+        box-shadow: none;
+    }
+}
+
 .navbar-brand {
     font-weight: 400;
     font-size: 36px;
@@ -76,6 +82,7 @@
     border-left: 0;
     border: none;
     box-shadow: none;
+    font-weight: 500;
 
     &:focus {
         border: none;
@@ -107,6 +114,15 @@
         img {
             width: 20px;
             height: 20px;
+        }
+
+        &:hover {
+            @media (min-width: 1024px) {
+                background-color: #F1F3F8;
+                -webkit-box-shadow: 0px 5px 10px 2px rgba(57, 59, 68, 0.2);
+                -moz-box-shadow: 0px 5px 10px 2px rgba(57, 59, 68, 0.2);
+                box-shadow: 0px 5px 10px 2px rgba(57, 59, 68, 0.2);
+            }
         }
     }
 }

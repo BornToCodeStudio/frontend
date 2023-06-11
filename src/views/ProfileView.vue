@@ -1,0 +1,124 @@
+<script setup lang="ts">
+import defaultAvatar from '../assets/avatar.png'
+import Media from '../components/ProfileView/Media.vue'
+import Achievement from '../components/ProfileView/Achievement.vue'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+
+import 'swiper/css';
+
+import { useProfileStore } from '../stores/profile';
+
+const profileStore = useProfileStore();
+</script>
+
+<template>
+<div class="profile d-flex justify-content-around">
+    <div>
+        <div class="d-flex align-items-center gap-3">
+            <h1 class="nickname display-5">Никнейм</h1>
+            <div class="avatar rounded-circle">
+                <img :src="defaultAvatar"/>
+            </div>
+        </div>
+        <div class="info d-flex flex-column gap-3">
+            <span>Страна: Страна</span>
+            <span>Зарегистрирован: 23.05.1986</span>
+            <div class="d-flex gap-2">
+                <Media :key="index" v-for="(item, index) in profileStore.media" :image="item.image" :link="item.link" :name="item.name"/>
+            </div>
+            <div class="stats d-flex">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="../assets/goal.png"/>
+                    <span>Решено задач: 0</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <img src="../assets/edit.png"/>
+                    <span>Созданно задач: 0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="achievements d-flex flex-column">
+        <h1 class="display-5">Достижения</h1>
+        <swiper :slides-per-view="5" style="width: 500px; height: 150px;" class="mySwiper">
+            <swiper-slide :key="index" v-for="(item, index) in profileStore.achievements">
+                <Achievement class="ach" :name="item.name"/>
+            </swiper-slide>
+        </swiper>
+    </div>
+</div>
+</template>
+
+<style scoped lang="scss">
+.ach {
+    margin-top: 25px
+}
+
+.profile {
+    margin: 0 5% 0 5%;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    -webkit-box-shadow: 0px 0px 9px 15px rgba(214, 224, 240, 0.3);
+    -moz-box-shadow: 0px 0px 9px 15px rgba(214, 224, 240, 0.3);
+    box-shadow: 0px 0px 9px 15px rgba(214, 224, 240, 0.3);
+    background-color: rgb(214, 224, 240, 0.6);
+    text-align: center;
+
+    img {
+        width: 100px;
+        height: 100px;
+        margin-top: 4px;
+    }
+}
+
+.nickname {
+    font-weight: 400;
+}
+
+.info {
+    span {
+        font-weight: 400;
+        font-size: 28px;
+    }
+}
+
+.stats {
+    img {
+        width: 32px;
+        height: 32px;
+    }
+
+    span {
+        font-weight: 400;
+        font-size: 24px;
+    }
+
+    gap: 100px;
+    margin-top: 25px;
+
+    @media (max-width: 579px) {
+        flex-direction: column;
+        gap: 30px;
+    }
+}
+
+.achievements {
+    text-align: center;
+    gap: 20px;
+
+    h1 {
+        font-weight: 400;
+        line-height: 120px;
+        height: 120px;
+    }
+
+    @media (max-width: 1203px) {
+        display: none;
+        opacity: 0;
+        position: absolute;
+    }
+}
+</style>
