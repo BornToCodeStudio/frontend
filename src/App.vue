@@ -2,12 +2,13 @@
 import { RouterLink, RouterView } from 'vue-router'
 import NavBar from './components/NavBar.vue'
 import SignInView from './views/SignInView.vue'
+import SignUpView from './views/SignUpView.vue'
 </script>
 
 <template>
   <main class="d-flex flex-column">
     <NavBar />
-    <SignInView class="r" />
+    <SignUpView class="r" />
   </main>
 </template>
 
