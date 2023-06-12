@@ -18,13 +18,13 @@
             <div class="image input-group-text justify-content-center" id="basic-addon1">
                 <img src="../assets/key_gray.png" />
             </div>
-            <input type="text" class="form-control" placeholder="Введите желаемый пароль" aria-label="Пароль" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" placeholder="Желаемый пароль" aria-label="Пароль" aria-describedby="basic-addon1">
         </div>
         <button class="sign-up-button btn btn-light">
             <span>Зарегистрироваться</span>
         </button>
-        <a href="#" class="forgot-pwd mb-5">Регистрируясь вы соглашаетесь с условиями
-                                            <br>Предоставления услуг и Политикой конфиденциальности.</a>
+        <a href="#" class="forgot-pwd mb-5 text-center">Регистрируясь вы соглашаетесь с условиями
+                                        <br>Предоставления услуг и Политикой конфиденциальности.</a>
     </div>
 </div>
 </template>
@@ -35,7 +35,7 @@
     border-color: #F1F3F8;
     font-size: 18px;
     color: #393B44;
-    width: 300px;
+    text-align: center;
     font-size: 24px;
 
     img {
@@ -84,8 +84,8 @@
     border: none;
     box-shadow: none;
     font-weight: 500;
-    width: 325px;
-    height: 70px;
+    width: 400px;
+    height: 75px;
     font-size: 24px;
     padding-left: 0;
 
@@ -101,7 +101,7 @@
 }
 
 .left {
-    height: 511px;
+    height: 474px;
 
     .big-title {
         font-weight: 700;
@@ -126,7 +126,12 @@
 
     @media (max-width: 995px) {
         justify-content: space-between !important;
-        height: 800px;
+        height: 1000px;
+
+        .form-control{
+            position: relative;
+            width: 100px;
+        }
 
         @mixin small-input {
             width: 100%;
