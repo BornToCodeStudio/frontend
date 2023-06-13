@@ -3,53 +3,75 @@ import defaultAvatar from '../assets/avatar.png'
 import Media from '../components/ProfileView/Media.vue'
 import Achievement from '../components/ProfileView/Achievement.vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
+import Tasks from "../components/Task.vue";
 
 import 'swiper/css';
 
 import { useProfileStore } from '../stores/profile';
 
 const profileStore = useProfileStore();
+
+const tasks = [{author: "horex", description: "Ваша первая задача"},
+            {author: "cowfucker", description: "Вывести 'Hello world' с помощью js"},
+            {author: "cowfucker", description: "Вывести 'Hello world' с помощью js"},
+            {author: "cowfucker", description: "Вывести 'Hello world' с помощью js"}]
+
+
 </script>
 
 <template>
 <div class="profile d-flex justify-content-around">
-    <div>
-        <div class="d-flex align-items-center gap-3">
-            <h1 class="nickname display-5">Никнейм</h1>
-            <div class="avatar rounded-circle">
-                <img :src="defaultAvatar"/>
-            </div>
-        </div>
-        <div class="info d-flex flex-column gap-3">
-            <span>Страна: Страна</span>
-            <span>Зарегистрирован: 23.05.1986</span>
-            <div class="d-flex gap-2">
-                <Media :key="index" v-for="(item, index) in profileStore.media" :image="item.image" :link="item.link" :name="item.name"/>
-            </div>
-            <div class="stats d-flex">
+    <div class="d-flex flex-column gap-5">
+        <div class="d-flex flex-row justify-content-between" style="margin-left: 30px;">
+            <div>
                 <div class="d-flex align-items-center gap-3">
-                    <img src="../assets/goal.png"/>
-                    <span>Решено задач: 0</span>
+                    <h1 class="nickname display-5">Никнейм</h1>
+                    <div class="avatar rounded-circle">
+                        <img :src="defaultAvatar"/>
+                    </div>
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <img src="../assets/edit.png"/>
-                    <span>Созданно задач: 0</span>
+                <div class="info d-flex flex-column gap-3">
+                    <span>Страна: Страна</span>
+                    <span>Зарегистрирован: 23.05.1986</span>
+                    <div class="d-flex gap-2">
+                        <Media :key="index" v-for="(item, index) in profileStore.media" :image="item.image" :link="item.link" :name="item.name"/>
+                    </div>
+                    <div class="stats d-flex">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="../assets/goal.png"/>
+                            <span>Решено задач: 0</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="../assets/edit.png"/>
+                            <span>Созданно задач: 0</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="achievements d-flex flex-column">
+                <h1 class="display-5">Достижения:</h1>
+                <swiper :slides-per-view="5" style="width: 500px; height: 150px;" class="mySwiper">
+                    <swiper-slide :key="index" v-for="(item, index) in profileStore.achievements">
+                        <Achievement class="ach" :name="item.name"/>
+                    </swiper-slide>
+                </swiper>
+            </div>
+        </div>  
+        <div class="tasks d-flex flex-row gap-4">
+                <Tasks class="task" v-bind:key="index" v-for="(task, index) in tasks" :task="task"/>
         </div>
-    </div>
-    <div class="achievements d-flex flex-column">
-        <h1 class="display-5">Достижения</h1>
-        <swiper :slides-per-view="5" style="width: 500px; height: 150px;" class="mySwiper">
-            <swiper-slide :key="index" v-for="(item, index) in profileStore.achievements">
-                <Achievement class="ach" :name="item.name"/>
-            </swiper-slide>
-        </swiper>
-    </div>
+    </div>  
 </div>
 </template>
 
 <style scoped lang="scss">
+
+.tasks {
+    flex-wrap: wrap;
+}   
+.task {
+    width: 45%;
+}
 .ach {
     margin-top: 25px
 }
@@ -108,6 +130,7 @@ const profileStore = useProfileStore();
 .achievements {
     text-align: center;
     gap: 20px;
+    margin-right: 100px;
 
     h1 {
         font-weight: 400;
