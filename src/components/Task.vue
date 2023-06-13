@@ -1,24 +1,28 @@
-<script lang="ts">
-export default {
-    name: "Task-view",
-    props: {
-        task: {
-            type: Object,
-            default: null
+<script setup lang="ts">
+import { useTaskStore } from '../stores/task';
+const taskStore = useTaskStore();
+
+const props = defineProps({
+    task: {
+        type: Object,
+        default: null
+    },
+    taskWidth: {
+        type: Number,
+        default: 80
         },
-        taskWidth: {
-            type: Number,
-            default: 80
-        },
-        taskLeft: {
-            type: Number,
-            default: 350
-        },
-        taskRight: {
-            type: Number,
-            default: 350
-        }
+    taskLeft: {
+        type: Number,
+        default: 350
+    },
+    taskRight: {
+        type: Number,
+        default: 350
     }
+});
+
+let checkLanguage = function() {
+        
 }
 </script>
 
@@ -32,13 +36,13 @@ export default {
                     <span class="">{{task.author}}</span>
                 </div>
                 <div class="d-flex gap-3">
-                    <img src="../assets/html.png" ref="html" style="width: 20px; height: 20px;">
-                    <img src="../assets/css.png" ref="css" style="width: 15px; height: 20px;">
-                    <img src="../assets/js.png" ref="js" style="width: 30px; height: 20px;">
+                    <img v-if="task.languages[0]" src="../assets/html.png" ref="html" style="width: 20px; height: 20px;">
+                    <img v-if="task.languages[1]" src="../assets/css.png" ref="css" style="width: 15px; height: 20px;">
+                    <img v-if="task.languages[2]" src="../assets/js.png" ref="js" style="width: 30px; height: 20px;">
                 </div>
             </div>
         </div>
-        <div id="hidden" class="rightSide d-flex flex-row" style="background-image: url('src/assets/background.png');" :style="{ width: `${taskRight}px` }">
+        <div class="rightSide d-flex flex-row" style="background-image: url('src/assets/background.png');" :style="{ width: `${taskRight}px` }">
             <div class="content">
                 <div class="start d-flex flex-column" >
                     <span id="text" class="fs-2" >Начать</span>
@@ -56,14 +60,15 @@ export default {
 </template>
 
 <style scoped lang="scss">
-
+    .rightSide {
+    
+    }
     .content {
         width: 100%;
         display: none;
         flex-direction: row;
         justify-content: space-between;
-        
-
+        color: #393B44;
     }
 
     .start {
@@ -73,13 +78,13 @@ export default {
     }
 
     .content:hover {
-        background: rgba(0, 0, 0, 0.5);
+        background: rgb(214, 224, 240, 0.8);
         cursor: pointer;
     }
 
-    #hidden:hover .content{
+    .rightSide:hover .content{
         display: flex;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgb(214, 224, 240, 0.8);
         cursor: pointer;
     }
 

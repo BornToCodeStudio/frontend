@@ -8,14 +8,10 @@ import Tasks from "../components/Task.vue";
 import 'swiper/css';
 
 import { useProfileStore } from '../stores/profile';
+import { useTaskStore } from '../stores/task';
 
 const profileStore = useProfileStore();
-
-const tasks = [{author: "horex", description: "Ваша первая задача"},
-            {author: "cowfucker", description: "Вывести 'Hello world' с помощью js"},
-            {author: "cowfucker", description: "Вывести 'Hello world' с помощью js"},
-            {author: "cowfucker", description: "Вывести 'Hello world' с помощью js"}]
-
+const taskStore = useTaskStore();
 
 </script>
 
@@ -58,7 +54,8 @@ const tasks = [{author: "horex", description: "Ваша первая задач�
             </div>
         </div>  
         <div class="tasks d-flex flex-row gap-4">
-                <Tasks class="task" v-bind:key="index" v-for="(task, index) in tasks" :task="task"/>
+                <Tasks class="task" v-bind:key="index" v-for="(task, index) in taskStore.task" 
+                :task="task"/>
         </div>
     </div>  
 </div>
