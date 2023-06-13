@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import NavBar from './components/NavBar.vue'
-import Profile from './views/ProfileView.vue'
+import SignInView from './views/SignInView.vue'
 </script>
 
 <template>
   <main class="d-flex flex-column">
     <NavBar />
-    <Profile />
+    <SignInView class="r" />
   </main>
 </template>
 

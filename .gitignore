@@ -12,6 +12,7 @@ node_modules
 dist
 dist-ssr
 coverage
+codemirror
 *.local
 
 /cypress/videos/

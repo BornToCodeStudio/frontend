@@ -5,12 +5,6 @@
 <div class="auth d-flex justify-content-center align-items-center">
     <div class="left d-flex flex-column align-items-center justify-content-between">
         <h1 class="big-title mt-5">Born To Code</h1>
-        <div class="d-flex under-title gap-1 mb-5">
-            <span>Нет аккаунта?</span>
-            <span class="connect">
-                <a href="#">Присоединяйся</a>
-            </span>
-        </div>
     </div>
     <div class="center-line"></div>
     <div class="right d-flex flex-column align-items-center justify-content-between">
@@ -24,23 +18,24 @@
             <div class="image input-group-text justify-content-center" id="basic-addon1">
                 <img src="../assets/key_gray.png" />
             </div>
-            <input type="text" class="form-control" placeholder="Пароль" aria-label="Пароль" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" placeholder="Желаемый пароль" aria-label="Пароль" aria-describedby="basic-addon1">
         </div>
-        <button class="sign-in-button btn btn-light">
-            <span>Войти</span>
+        <button class="sign-up-button btn btn-light">
+            <span>Зарегистрироваться</span>
         </button>
-        <a href="#" class="forgot-pwd mb-5">Забыли пароль?</a>
+        <a href="#" class="forgot-pwd mb-5 text-center">Регистрируясь вы соглашаетесь с условиями
+                                        <br>Предоставления услуг и Политикой конфиденциальности.</a>
     </div>
 </div>
 </template>
 
 <style scoped lang="scss">
-.sign-in-button {
+.sign-up-button {
     background-color: #F1F3F8;
     border-color: #F1F3F8;
     font-size: 18px;
     color: #393B44;
-    width: 100px;
+    text-align: center;
     font-size: 24px;
 
     img {
@@ -89,7 +84,7 @@
     border: none;
     box-shadow: none;
     font-weight: 500;
-    width: 325px;
+    width: 400px;
     height: 75px;
     font-size: 24px;
     padding-left: 0;
@@ -106,7 +101,7 @@
 }
 
 .left {
-    height: 511px;
+    height: 474px;
 
     .big-title {
         font-weight: 700;
@@ -115,46 +110,28 @@
         text-align: center;
         color: #393B44;
 
-        @media (max-width: 992px) {
+        @media (max-width: 995px) {
             font-size: 48px;
             width: 100%;
-        }
-    }
-
-    @media (max-width: 992px) {
-        width: 100%;
-        justify-content: start !important;
-        height: 211px;
-    }
-
-    .under-title {
-        span {
-            font-weight: 400;
-            color: #393B44;
-            font-size: 20px;
-        }
-
-        .connect {
-            text-decoration: underline;
-
-            a {
-                text-decoration: none;
-                color: #393B44;
-            }
         }
     }
 }
 
 .right {
-    height: 511px;
+    height: 560px;
 
     .login-input {
         margin-top: 100px;
     }
 
-    @media (max-width: 992px) {
+    @media (max-width: 995px) {
         justify-content: space-between !important;
-        height: 378px;
+        height: 1000px;
+
+        .form-control{
+            position: relative;
+            width: 100px;
+        }
 
         @mixin small-input {
             width: 100%;
