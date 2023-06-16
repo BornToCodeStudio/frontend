@@ -21,9 +21,6 @@ const props = defineProps({
     }
 });
 
-let checkLanguage = function() {
-        
-}
 </script>
 
 <template>
@@ -60,9 +57,6 @@ let checkLanguage = function() {
 </template>
 
 <style scoped lang="scss">
-    .rightSide {
-    
-    }
     .content {
         width: 100%;
         display: none;
@@ -80,6 +74,7 @@ let checkLanguage = function() {
     .content:hover {
         background: rgb(214, 224, 240, 0.8);
         cursor: pointer;
+        display: flex;
     }
 
     .rightSide:hover .content{
