@@ -1,4 +1,4 @@
-<script lang="ts">
+<script setup lang="ts">
 import Tasks from "../components/Task.vue";
 
 const tasks = [{author: "horex", description: "Ваша первая задача"},
@@ -9,29 +9,28 @@ const tasks = [{author: "horex", description: "Ваша первая задач�
 
 <template>
     <div class="container-fluid d-flex flex-column gap-3">
-        <div class="main d-flex flex-column gap-2">
+        <div class="main d-flex flex-column gap-3">
             <span class="title">Задачи</span>
             <span class="description">Воодушевляющее описание страницы</span>
-            <div class="lang d-flex flex-row gap-2">
-                <span tabindex="1">HTML</span>
-                <span tabindex="1">CSS</span>
-                <span tabindex="1">JAVASCRIPT</span>
+            <div class="lang d-flex flex-row gap-3">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JAVASCRIPT</span>
             </div>
-            <div class="filter d-flex flex-row gap-2">
-                <span tabindex="1">Популярные</span>
-                <span tabindex="1">Количество решений</span>
-                <span tabindex="1">Последние</span>
+            <div class="filter d-flex flex-row gap-3">
+                <span>Популярные</span>
+                <span>Количество решений</span>
+                <span>Последние</span>
             </div>
         </div>
         <div class="d-flex flex-column gap-4">
-            <Tasks class="task" v-bind:key="index" v-for="(task, index) in tasks" :task="task"/>
         </div>
     </div>
 </template>
 
 <style scoped lang="scss">
     .main {
-        margin-left: 150px;
+        margin-left: 210px;
     }
 
     .title {
@@ -58,8 +57,8 @@ const tasks = [{author: "horex", description: "Ваша первая задач�
     }
 
     .lang span:hover {
-            color:#393B44;
-            cursor: pointer;
+        color:#393B44;
+        cursor: pointer;
     }
 
     .lang span:focus {
@@ -75,8 +74,8 @@ const tasks = [{author: "horex", description: "Ваша первая задач�
     }
 
     .filter span:hover {
-            color:#393B44;
-            cursor: pointer;
+        color:#393B44;
+        cursor: pointer;
     }
     
     .filter span:focus {

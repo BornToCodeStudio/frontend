@@ -69,5 +69,7 @@ export const useProfileStore = defineStore('profile', () => {
         name: "Знакомство с Born To Code"
     });
 
-    return { media, achievements };
+    let authorized = ref(false);
+
+    return { media, achievements, authorized };
 });

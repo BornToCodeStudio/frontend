@@ -4,7 +4,7 @@
 <template>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Born To Code</a>
+            <RouterLink to="/" class="navbar-brand">Born To Code</RouterLink>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -28,7 +28,7 @@
                             </RouterLink>
                         </li>
                         <li class="nav-item">
-                            <RouterLink to="/" class="buttons">
+                            <RouterLink to="/signIn" class="buttons">
                                 <button class="btn btn-light">
                                     <div class="d-flex align-items-center gap-1">
                                         <img src="../assets/avatar.png"/>
