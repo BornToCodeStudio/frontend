@@ -1,4 +1,33 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useAxios } from '@/stores/axios';
+import { useProfileStore } from '@/stores/profile';
+
+const loginInput = ref<HTMLInputElement | null>(null);
+const passwordInput = ref<HTMLInputElement | null>(null);
+
+async function signIn() {
+    try {
+        let dto = {
+            Name: loginInput.value?.value,
+            Password: passwordInput.value?.value
+        };
+
+        await useAxios()
+        .post("/users/signIn", dto, { withCredentials: true })
+        .then(response => {
+            if (response.status == 200)
+                useProfileStore().authorized = true;
+            else if (response.status == 404)
+                alert("Такого профиля не существует");
+        })
+        .catch(error => {
+            alert("Не удалось авторизоваться. " + error.response.data);
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
 </script>
 
 <template>
@@ -8,7 +37,9 @@
         <div class="d-flex under-title gap-1 mb-5">
             <span>Нет аккаунта?</span>
             <span class="connect">
-                <a href="#">Присоединяйся</a>
+                <RouterLink to="/signUp">
+                    Присоединяйся
+                </RouterLink>
             </span>
         </div>
     </div>
@@ -18,15 +49,15 @@
             <div class="image input-group-text justify-content-center" id="basic-addon1">
                 <img src="../assets/avatar_gray.png" />
             </div>
-            <input type="text" class="form-control" placeholder="BornToCode" aria-label="BornToCode" aria-describedby="basic-addon1">
+            <input ref="loginInput" type="text" class="form-control" placeholder="BornToCode" aria-label="BornToCode" aria-describedby="basic-addon1">
         </div>
         <div class="pwd-input input-group">
             <div class="image input-group-text justify-content-center" id="basic-addon1">
                 <img src="../assets/key_gray.png" />
             </div>
-            <input type="text" class="form-control" placeholder="Пароль" aria-label="Пароль" aria-describedby="basic-addon1">
+            <input ref="passwordInput" type="password" class="form-control" placeholder="Пароль" aria-label="Пароль" aria-describedby="basic-addon1">
         </div>
-        <button class="sign-in-button btn btn-light">
+        <button class="sign-in-button btn btn-light" @click="signIn()">
             <span>Войти</span>
         </button>
         <a href="#" class="forgot-pwd mb-5">Забыли пароль?</a>

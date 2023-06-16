@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useTaskStore } from '../stores/task';
 const taskStore = useTaskStore();
 
@@ -18,13 +19,16 @@ const props = defineProps({
     taskRight: {
         type: Number,
         default: 350
+    },
+    taskFontSize: {
+        type: Number,
+        default: 46
     }
 });
-
 </script>
 
 <template>
-    <div class="main container-fluid p-0 d-flex flex-row rounded-2 border border-dark" style="height: 160px;">
+    <div class="main container-fluid p-0 d-flex flex-row rounded-2 border border-2 border-dark" style="height: 160px;">
         <div class="leftSide d-flex flex-column justify-content-around p-2 border-end border-dark" :style="{ width: `${taskLeft}px` }">
             <span>{{task.description}}</span>
             <div class="d-flex flex-row justify-content-between mt-5">
@@ -41,15 +45,20 @@ const props = defineProps({
         </div>
         <div class="rightSide d-flex flex-row" style="background-image: url('src/assets/background.png');" :style="{ width: `${taskRight}px` }">
             <div class="content">
+                <div></div>
                 <div class="start d-flex flex-column" >
-                    <span id="text" class="fs-2" >Начать</span>
-                    <span id="text" class="fs-2">Другие решения</span>
+                    <span :style="{ fontSize: `${taskFontSize}px` }">Начать</span>
+                    <span :style="{ fontSize: `${taskFontSize}px` }">Другие решения</span>
                 </div>
-                <div class="info d-flex flex-row">
-                    <img src="../assets/likes.png" style="width:26px; height: 26px; ">
-                    <span style="color: #F9595F;">10</span>
-                    <img src="../assets/views.png" style="width:26px; height: 26px;">
-                    <span style="color: #59B6F9;">10</span>
+                <div class="info d-flex gap-3">
+                    <div class="d-flex">
+                        <img src="../assets/likes.png" style="width:26px; height: 26px; ">
+                        <span style="color: #F9595F;">10</span>
+                    </div>
+                    <div class="d-flex">
+                        <img src="../assets/views.png" style="width:26px; height: 26px;">
+                        <span style="color: #59B6F9;">10</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,38 +66,53 @@ const props = defineProps({
 </template>
 
 <style scoped lang="scss">
-    .content {
-        width: 100%;
-        display: none;
-        flex-direction: row;
-        justify-content: space-between;
+.leftSide {
+    background: #F1F3F8;
+    border-radius: 0.375rem 0 0 0.375rem;
+}
+
+.rightSide {
+    border-radius: 0 0.375rem 0.375rem 0;
+    transition: 0.45s;
+
+    &:hover {
+        cursor: pointer;
+
+        .content {
+            opacity: 100%;
+        }
+    }
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    background: rgb(214, 224, 240, .8);
+    opacity: 0%;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #393B44;
+    border-radius: 0 0.375rem 0.375rem 0;
+    transition: 0.45s;
+    padding: 0 10px 0 10px;
+}
+
+.start {
+    span {
         color: #393B44;
-    }
-
-    .start {
-        margin-left: 10px;
-        margin-top:auto;
-        margin-bottom:auto;
-    }
-
-    .content:hover {
-        background: rgb(214, 224, 240, 0.8);
-        cursor: pointer;
-        display: flex;
-    }
-
-    .rightSide:hover .content{
-        display: flex;
-        background: rgb(214, 224, 240, 0.8);
-        cursor: pointer;
-    }
-
-    #text:hover {
-        margin-left: 20px;
-    }
-    .info span {
-        font-style: normal;
+        transition: 0.5s;
         font-weight: 400;
-        font-size: 21px;
-    } 
+        -webkit-text-stroke: #393B44;
+    }
+
+    span:hover {
+        transform: translateX(20px);
+    }
+}
+
+.info span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 21px;
+} 
 </style>
