@@ -10,15 +10,15 @@ const props = defineProps({
     },
     taskWidth: {
         type: Number,
-        default: 80
+        default: 45
         },
     taskLeft: {
         type: Number,
-        default: 350
+        default: 30
     },
     taskRight: {
         type: Number,
-        default: 350
+        default: 40
     },
     taskFontSize: {
         type: Number,
@@ -28,8 +28,8 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="main container-fluid p-0 d-flex flex-row rounded-2 border border-2 border-dark" style="height: 160px;">
-        <div class="leftSide d-flex flex-column justify-content-around p-2 border-end border-dark" :style="{ width: `${taskLeft}px` }">
+    <div class="main container-fluid p-0 d-flex flex-row rounded-2 border border-2 border-dark" style="height: 160px;" :style="{ width: `${taskWidth}%` }">
+        <div class="leftSide d-flex flex-column justify-content-around p-2 border-end border-dark" :style="{ width: `${taskLeft}%` }">
             <span>{{task.description}}</span>
             <div class="d-flex flex-row justify-content-between mt-5">
                 <div class="d-flex gap-3">
@@ -43,12 +43,14 @@ const props = defineProps({
                 </div>
             </div>
         </div>
-        <div class="rightSide d-flex flex-row" style="background-image: url('src/assets/background.png');" :style="{ width: `${taskRight}px` }">
+        <div class="rightSide d-flex flex-row" style="background-image: url('src/assets/background.png');" :style="{ width: `${taskRight}%` }">
             <div class="content">
                 <div></div>
-                <div class="start d-flex flex-column" >
-                    <span :style="{ fontSize: `${taskFontSize}px` }">Начать</span>
-                    <span :style="{ fontSize: `${taskFontSize}px` }">Другие решения</span>
+                <div class="start d-flex flex-column">
+                    <RouterLink class='text-offset' :to="`/task/${task.id}`">
+                        <span :style="{ fontSize: `${taskFontSize}px` }">Начать</span>
+                    </RouterLink>
+                    <span class='text-offset' :style="{ fontSize: `${taskFontSize}px` }">Другие решения</span>
                 </div>
                 <div class="info d-flex gap-3">
                     <div class="d-flex">
@@ -75,22 +77,22 @@ const props = defineProps({
     border-radius: 0 0.375rem 0.375rem 0;
     transition: 0.45s;
 
-    &:hover {
+    /* &:hover {
         cursor: pointer;
 
         .content {
             opacity: 100%;
         }
-    }
+    } */
 }
 
 .content {
     width: 100%;
     display: flex;
     background: rgb(214, 224, 240, .8);
-    opacity: 0%;
+    opacity: 100%;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content:space-between;
     color: #393B44;
     border-radius: 0 0.375rem 0.375rem 0;
     transition: 0.45s;
@@ -98,21 +100,28 @@ const props = defineProps({
 }
 
 .start {
-    span {
+    justify-content: space-evenly;
+    width: 50%;
+    .text-offset {
         color: #393B44;
         transition: 0.5s;
         font-weight: 400;
         -webkit-text-stroke: #393B44;
+        text-decoration: none;
     }
 
-    span:hover {
+    .text-offset:hover {
         transform: translateX(20px);
     }
 }
 
-.info span {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 21px;
-} 
+.info {
+    width: 50%;
+    justify-content: flex-end;
+    span {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 21px;
+    } 
+}
 </style>

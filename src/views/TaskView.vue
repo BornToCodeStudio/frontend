@@ -6,9 +6,9 @@
                 <div @click="changeOption(2)" :class="optionType == 2 ? 'selected' : 'option'">CSS</div>
                 <div @click="changeOption(3)" :class="optionType == 3 ? 'selected' : 'option'">JS</div>
             </div>
-            <div class="html-editor" v-show="optionType == 1" ref="html"></div>
-            <div class="css-editor" v-show="optionType == 2" ref="css"></div>
-            <div class="js-editor" v-show="optionType == 3" ref="js"></div>
+            <div class="html-editor editor" v-show="optionType == 1" ref="html"></div>
+            <div class="css-editor editor" v-show="optionType == 2" ref="css"></div>
+            <div class="js-editor editor" v-show="optionType == 3" ref="js"></div>
             <div class="buttons">
                 <div class="upload__file">Загрузить файл</div>
                 <div class="preview" @click="preview()">Предпросмотр</div>
@@ -19,7 +19,7 @@
 
         <div class="info">
             <span class="result" :class="{ true: result, false: !result }">Результат</span>
-            <span class="description">{{ task?.fullDescription }}</span>
+            <span class="description">{{ currentTask?.fullDescription }}</span>
             <div class="comments">
             </div>
         </div>
@@ -32,39 +32,41 @@ import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import { javascript } from "@codemirror/lang-javascript";
 import { EditorState } from "@codemirror/state";
-import { ref } from "vue";
+import { onMounted, ref, toRef } from "vue";
 import { useRoute, useRouter } from 'vue-router';
-import { inject } from 'vue';
+import { useAxios } from '@/stores/axios';
+import { useTaskStore } from "@/stores/task";
 
 let optionType = ref(1);
-let htmlEditor = ref(null);
-let cssEditor = ref(null);
-let jsEditor = ref(null);
-let srcDoc =  ref('');
+let htmlEditor = ref<EditorView | null>(null);
+let cssEditor = ref<EditorView | null>(null);
+let jsEditor = ref<EditorView | null>(null);
+let htmlDoc = ref<Element | DocumentFragment | undefined>(undefined);
+let cssDoc = ref<Element | DocumentFragment | undefined>(undefined);
+let jsDoc = ref<Element | DocumentFragment | undefined>(undefined);
+let srcDoc =  ref<string | undefined>('');
 let result = ref(false);
-let task = ref(null);
+let currentTask = ref<null | Types.Task>(null);
+let iframe = ref<HTMLIFrameElement | null>(null);
 const route = useRoute();
 const router = useRouter();
 
-
 function loadTaskFromStore() {
     let id = Number(route.params.id);
-    let task = this.$store.getters.getTask(id);
+    let task = useTaskStore().getTask(id);
     if (!task) {
         loadTask();
 
         return;
     }
     
-    task.value = task;
+    currentTask = toRef(task);
 };
 async function loadTask() {
     try {
-        let data = await axios({
-            method: "get",
-            url: "/tasks/get/" + route.params.id,
-            withCredentials: true
-        }).then((response) => {
+        let data = await useAxios()
+        .get("/tasks/get/" + route.params.id, { withCredentials: true })
+        .then((response) => {
             if (response.status == 200)
                 return response.data;
             else {
@@ -77,12 +79,12 @@ async function loadTask() {
         if (!data)
             return null;
 
-        task.value = data;
+        currentTask.value = data;
     }
     catch (error) {
         router.push("/");
 
-        task.value = null;
+        currentTask.value = null;
     }
 };
 function changeOption(type: number) {
@@ -98,12 +100,12 @@ function getPreview() {
     if (!htmlEditor.value || !cssEditor.value || !jsEditor.value)
         return;
 
-    this.$refs.iframe.contentWindow.eval(getText(3));
+    (iframe.value?.contentWindow as any)?.eval(getText(3));
 
     return getText(1) + `<style>${getText(2)}</style>`;
 };
 function preview() {
-    srcDoc.value = getPreview();
+    srcDoc = toRef(getPreview());
 };
 function getText(type: Number) {
     let editor = null;
@@ -125,40 +127,31 @@ function getText(type: Number) {
     return editor.state.doc.toString();
 };
 async function solution() {
-    this.$store.state.loader = true;
 
     let verify = false;
     try {
-        verify = await axios({
-            method: "post",
-            url: "/users/verifySignIn",
-            withCredentials: true
-            }).then((response) => {
+        verify = await useAxios().get("/users/verifySignIn", { withCredentials: true }).then((response) => {
                 return response.status == 200;
         });
     }
     catch (error) {
-        this.$store.state.loader = false;
+        console.log(error)
     }
 
     if (!verify) {
         router.push("/SignIn");
 
-        this.$store.state.loader = false;
-
         return;
     }
 
-    let added = await axios({
-        method: 'get',
-        url: '/solutions/isAdded/' + route.params.id,
-        withCredentials: true 
-    }).then((response) => {
+    let added = await useAxios()
+        .get('/solutions/isAdded/' + route.params.id, { withCredentials: true } )
+        .then((response) => {
         return response.data;
     });
     
     let dto = {
-        TaskId: task.id,
+        TaskId: currentTask.value?.id,
         CreatedAt: new Date().toUTCString(),
         Html: getText(1),
         Css: getText(2),
@@ -168,81 +161,67 @@ async function solution() {
     }
 
     if (added) {
-        await axios({
-            method: 'put',
-            url: '/solutions/update',
-            data: dto,
-            withCredentials: true
-        });
+        await useAxios()
+        .put('/solutions/update',
+            { data: dto },
+            { withCredentials: true })
     }
     else {
-        await axios({
-            method: "put",
-            url: "/solutions/add",
-            data: dto,
-            withCredentials: true
-        });
+        await useAxios()
+        .put("/solutions/add",
+            { data: dto },
+            { withCredentials: true })
     }
 
-    this.$store.state.loader = false;
 };
 async function loadSolution() {
-    this.$store.state.loader = true;
 
     let verify = false;
     try {
-        verify = await axios({
-            method: "post",
-            url: "/users/verifySignIn",
-            withCredentials: true
-            }).then((response) => {
+        verify = await useAxios()
+        .post("/users/verifySignIn", { withCredentials: true })
+        .then((response) => {
                 return response.status == 200;
         });
     }
     catch (error) {
-        this.$store.state.loader = false;
+        console.log(error)
     }
 
     if (!verify) {
         createEditors("", "", "");
 
-        this.$store.state.loader = false;
-
         return;
     }
 
-    let added = await axios({
-        method: 'get',
-        url: '/solutions/isAdded/' + route.params.id,
-        withCredentials: true 
-    }).then((response) => {
+    let added = await useAxios()
+    .get('/solutions/isAdded/' + route.params.id,
+        { withCredentials: true } )
+        .then((response) => {
         return response.data;
     });
 
     if (!added) {
         let dto = {
-            TaskId: this.task.id,
+            TaskId: currentTask.value?.id,
             CreatedAt: new Date().toUTCString(),
             Html: "",
             Css: "",
             Js: "",
             Completed: false,
-            Title: this.task.title
+            Title: currentTask.value?.title
         }
 
-        await axios({
-            method: "put",
-            url: "/solutions/add",
-            data: dto,
-            withCredentials: true
-        });
+        await useAxios()
+        .put("/solutions/add",
+            { data: dto },
+            { withCredentials: true })
     }
 
-    let id = await axios({
-        method: "get",
-        url: "/users/selfProfile",
-        withCredentials: true
-    }).then((response) => {
+    let id = await useAxios()
+    .get("/users/selfProfile",
+        { withCredentials: true })
+    .then((response) => {
         if (response.status == 200)
         return response.data;
     });
@@ -250,26 +229,22 @@ async function loadSolution() {
     if (!id) {
         createEditors("", "", "");
 
-        this.$store.state.loader = false;
-
         return;
     }
 
-    let data = await axios({
-        method: 'get',
-        url: "/users/getProfile/" + id,
-        withCredentials: true
-    }).then((response) => {
+    let data = await useAxios()
+    .get("/users/getProfile/" + id,
+        { withCredentials: true })
+    .then((response) => {
         if (response.status == 200)
             return response.data;
     });
 
     let name = data.name;
 
-    let solution = await axios({
-        method: 'get',
-        url: `solutions/${name}/get/${route.params.id}`
-    }).then((response) => {
+    let solution = await useAxios()
+    .get(`solutions/${name}/get/${route.params.id}`)
+    .then((response) => {
         if (response.status == 200)
             return response.data;
         else
@@ -279,8 +254,6 @@ async function loadSolution() {
     if (!solution) {
         createEditors("", "", "");
 
-        this.$store.state.loader = false;
-
         return;
 }
 
@@ -288,9 +261,8 @@ async function loadSolution() {
 
     createEditors(solution?.html, solution?.css, solution?.js);
 
-    this.$store.state.loader = false;
 };
-function createEditors(htmlText: String, cssText: String, jsText: String) {
+function createEditors(htmlText: string, cssText: string, jsText: string) {
     let theme = EditorView.theme({
         ".cm-scroller": {"height":"450px"},
         ".cm-activeLine": {"background":"#ffcbb3"},
@@ -299,7 +271,7 @@ function createEditors(htmlText: String, cssText: String, jsText: String) {
     });
 
     htmlEditor.value = new EditorView({
-        parent: this.$refs.html,
+        parent: htmlDoc.value,
         state: EditorState.create({
             doc: htmlText,
             extensions: [basicSetup, html(), theme]
@@ -307,7 +279,7 @@ function createEditors(htmlText: String, cssText: String, jsText: String) {
     });
 
     cssEditor.value = new EditorView({
-        parent: this.$refs.css,
+        parent: cssDoc.value,
         state: EditorState.create({
             doc: cssText,
             extensions: [basicSetup, css(), theme]
@@ -315,7 +287,7 @@ function createEditors(htmlText: String, cssText: String, jsText: String) {
     });
 
     jsEditor.value = new EditorView({
-        parent: this.$refs.js,
+        parent: jsDoc.value,
         state: EditorState.create({
             doc: jsText,
             extensions: [basicSetup, javascript(), theme]
@@ -323,26 +295,33 @@ function createEditors(htmlText: String, cssText: String, jsText: String) {
     });
 };
 function check() {
-    let rules = this.task?.htmlStruct.checkElementRules;
-    if (!rules)
+    let rules = currentTask.value?.htmlStruct.checkElementRules
+    if (!rules && rules == undefined)
         return;
 
-    let complete = [];
+    let ruleLength = rules.length
+
+    let complete: Array<boolean | undefined> = [];
     rules.forEach(rule => {
-        complete.push(checkTextInHtmlElement(rule.value, rule.element, rules.length));
+        complete.push(checkTextInHtmlElement(rule.value, rule.element, ruleLength));
     });
 
     result.value = complete.every(b => b);
 
     solution();
 };
-function checkTextInHtmlElement(text: String, element: String, rulesLength: String) {
+function checkTextInHtmlElement(text: string, element: string, rulesLength: number) {
     const htmlString = getText(1);
     const parser = new DOMParser();
     const document = parser.parseFromString(htmlString, 'text/html');
-    let body = [...document.querySelector("body").children];
+    let temp = document.querySelector("body");
 
-    let array = [...document.querySelector("body").querySelectorAll(element)];
+    if(temp == null) {
+        return;
+    }
+
+    let body = [...temp.children];
+    let array = [...temp.querySelectorAll(element)];
     if (body.length != rulesLength)
         return false;
 
@@ -354,12 +333,14 @@ function checkTextInHtmlElement(text: String, element: String, rulesLength: Stri
     return text == innerHTML;
 }
 
-
-
-
 loadTaskFromStore();
 
-loadSolution();
+/* loadSolution(); */
+
+onMounted(() => {
+    createEditors('','','');
+});
+
 
 
 </script>
@@ -454,7 +435,9 @@ loadSolution();
             }
         }
 
+        
         .code__preview {
+            background-color: #D6E0F0;
             width: 100%;
             height: 300px;
             border-radius: 15px;

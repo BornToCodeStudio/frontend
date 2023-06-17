@@ -54,8 +54,8 @@ const taskStore = useTaskStore();
             </div>
         </div>  
         <div class="tasks d-flex flex-row gap-4">
-                <Tasks class="task" v-bind:key="index" v-for="(task, index) in taskStore.task" 
-                :task="task" :taskFontSize="34"/>
+                <Tasks class="task" v-bind:key="index" v-for="(task, index) in taskStore.tasks" 
+                :task="task" :taskFontSize="34" :taskLeft="50" :taskRight="50" :taskWidth="45"/>
         </div>
     </div>  
 </div>

@@ -2,24 +2,27 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useTaskStore = defineStore('task', () => {
-    const task = ref([] as Array<Task>);
-    task.value.push({
+    const tasks = ref([] as Array<Types.Task>);
+
+    function getTask(id: number) {
+        return tasks.value.find(t => t.id == id);
+    };
+
+    tasks.value.push({
+        id: 2,
+        title: "wadwadw",
         author: "horex",
         description: "Ваша первая задача",
         languages: [true, false, false],
         text: 'wadawdwa'
     })
-    task.value.push({
+    tasks.value.push({
+        id: 1,
+        title: "wadwadw",
         author: "cowfucker",
         description: "Ваша первая задача",
         languages: [false, true, true],
         text: 'wadawdwa'
     })
-    type Task = {
-        author: string,
-        description: string,
-        languages: Array<boolean>,
-        text: string
-    }
-    return { task };
+    return { tasks, getTask };
 })

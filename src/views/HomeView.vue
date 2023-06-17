@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import Tasks from "../components/Task.vue";
+import { useTaskStore } from '../stores/task';
 
-const tasks = [{author: "horex", description: "Ваша первая задача"},
-            {author: "cowfucker", description: "Вывести 'Hello world' с помощью js"},
-            {author: "cowfucker", description: "Вывести 'Hello world' с помощью js"},
-            {author: "cowfucker", description: "Вывести 'Hello world' с помощью js"}]
+const taskStore = useTaskStore();
+
 </script>
 
 <template>
@@ -24,6 +23,8 @@ const tasks = [{author: "horex", description: "Ваша первая задач�
             </div>
         </div>
         <div class="d-flex flex-column gap-4">
+            <Tasks class="task" v-bind:key="index" v-for="(task, index) in taskStore.tasks" 
+                :task="task" :taskFontSize="34" :taskLeft="30" :taskRight="70" :taskWidth="75"/>
         </div>
     </div>
 </template>
