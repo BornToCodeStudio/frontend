@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import router from '@/router';
+import { useAxios } from '@/stores/axios';
 import { ref } from 'vue';
 
 let loginValidation = ref(false);
@@ -6,11 +8,32 @@ let pwdValidation = ref(false);
 const loginInput = ref<HTMLInputElement | null>(null);
 const passwordInput = ref<HTMLInputElement | null>(null);
 
-function signUp() {
+async function signUp() {
     let loginCheck = checkLogin();
     let passwordCheck = checkPassword();
     if (!loginCheck || !passwordCheck)
         return;
+
+    let dto = {
+        Name: loginInput.value?.value,
+        Password: passwordInput.value?.value
+    }
+
+    let response = await useAxios()
+    .post("/users/signUp", dto, { withCredentials: true })
+    .then((response) => response)
+    .catch((request) => alert("Не удалось зарегистрироваться. " + request.message));
+    if (!response)
+        return;
+
+    if (response.status == 200) {
+        alert("Вы успешно зарегистрированы. Теперь авторизуйтесь");
+
+        router.push("/signIn");
+    }
+    else {
+        alert("Не удалось зарегистрироваться. " + response.data);
+    }
 }
 
 function checkLogin() {
@@ -87,6 +110,14 @@ function checkPassword() {
   opacity: 0;
 }
 
+.login-input {
+    width: 400px;
+}
+
+.pwd-input {
+    width: 400px;
+}
+
 .sign-up-button {
     background-color: #F1F3F8;
     border-color: #F1F3F8;
@@ -141,7 +172,7 @@ function checkPassword() {
     border: none;
     box-shadow: none;
     font-weight: 500;
-    width: 400px;
+    width: 325px;
     height: 75px;
     font-size: 24px;
     padding-left: 0;
@@ -172,6 +203,12 @@ function checkPassword() {
             width: 100%;
         }
     }
+
+    @media (max-width: 992px) {
+        width: 100%;
+        justify-content: start !important;
+        height: 211px;
+    }
 }
 
 .right {
@@ -183,7 +220,7 @@ function checkPassword() {
 
     @media (max-width: 995px) {
         justify-content: space-between !important;
-        height: 1000px;
+        height: 378px;
 
         .form-control{
             position: relative;
@@ -229,7 +266,7 @@ function checkPassword() {
 
 .center-line {
     width: 4px;
-    height: 511px;
+    height: 560px;
     background-color: #393B44;
     border-radius: 5px;
 

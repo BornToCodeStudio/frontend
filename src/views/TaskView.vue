@@ -100,12 +100,14 @@ function getPreview() {
     if (!htmlEditor.value || !cssEditor.value || !jsEditor.value)
         return;
 
-    (iframe.value?.contentWindow as any)?.eval(getText(3));
-
     return getText(1) + `<style>${getText(2)}</style>`;
 };
 function preview() {
     srcDoc.value = getPreview();
+
+    setTimeout(() => {
+        (iframe.value?.contentWindow as any)?.eval(getText(3));
+    }, (1500));
 };
 function getText(type: Number) {
     let editor = null;
@@ -293,8 +295,6 @@ function createEditors(htmlText: string, cssText: string, jsText: string) {
             extensions: [basicSetup, javascript(), theme]
         })
     });
-
-    console.log(htmlDoc)
 };
 function check() {
     let rules = currentTask.value?.htmlStruct.checkElementRules

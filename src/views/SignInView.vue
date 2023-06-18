@@ -21,14 +21,15 @@ async function signIn() {
 
         await useAxios()
         .post("/users/signIn", dto, { withCredentials: true })
-        .then(response => {
-            if (response.status == 200)
-                useProfileStore().remember(login);
-            else if (response.status == 404)
-                alert("Неверный логин или пароль");
+        .then(async (response) => {
+            if (response.status == 200) {
+                await useProfileStore().remember(login);
+
+                router.push("/profile/" + useProfileStore().getId());
+            }
         })
         .catch(error => {
-            alert("Не удалось авторизоваться" + error.response.data);
+            alert("Не удалось авторизоваться. " + error.response.data);
         });
     } catch (error) {
         console.log(error);
@@ -40,6 +41,8 @@ onMounted(async () => {
     let authorized = await useProfileStore().authenticate();
     if (authorized)
         router.push("/profile/" + useProfileStore().getId());
+
+    await useAxios().get("https://ipinfo.io").then((response) => console.log(`Ваш город: ${useProfileStore().translit(response.data.city)}`));
 });
 
 </script>
