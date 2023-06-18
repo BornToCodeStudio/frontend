@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useTaskStore } from '../stores/task';
-const taskStore = useTaskStore();
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
     task: {
         type: Object,
@@ -30,7 +28,7 @@ const props = defineProps({
 <template>
     <div class="main container-fluid p-0 d-flex flex-row rounded-2 border border-2 border-dark" style="height: 160px;" :style="{ width: `${taskWidth}%` }">
         <div class="leftSide d-flex flex-column justify-content-around p-2 border-end border-dark" :style="{ width: `${taskLeft}%` }">
-            <span>{{task.description}}</span>
+            <span>{{task.shortDescription}}</span>
             <div class="d-flex flex-row justify-content-between mt-5">
                 <div class="d-flex gap-3">
                     <img src="../assets/avatar.png" class="rounded-circle" style="width: 28px; height: 28px;">
@@ -77,20 +75,20 @@ const props = defineProps({
     border-radius: 0 0.375rem 0.375rem 0;
     transition: 0.45s;
 
-    /* &:hover {
+    &:hover {
         cursor: pointer;
 
         .content {
             opacity: 100%;
         }
-    } */
+    }
 }
 
 .content {
     width: 100%;
     display: flex;
     background: rgb(214, 224, 240, .8);
-    opacity: 100%;
+    opacity: 0%;
     flex-direction: row;
     justify-content:space-between;
     color: #393B44;

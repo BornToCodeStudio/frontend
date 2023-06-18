@@ -7,6 +7,7 @@ declare namespace Types {
         shortDescription: string,
         codeExample: string,
         languages: Array<boolean>,
+        createDate: Date
         htmlStruct: { 
             checkElementRules: Array<TaskHtmlCheckElement>
         }

@@ -1,8 +1,22 @@
 <script setup lang="ts">
 import Tasks from "../components/Task.vue";
 import { useTaskStore } from '../stores/task';
+import { ref } from 'vue'
 
-const taskStore = useTaskStore();
+let tasksStore = ref(useTaskStore().tasks);
+let filter = ref(-1);
+
+function changeLanguageFilter(numb: number) {
+    filter.value = numb
+
+    if (tasksStore.value)
+        tasksStore.value= useTaskStore().getTaskByLanguageFilter(numb);
+}
+
+function allTasks() {
+    filter.value = -1
+    tasksStore.value = useTaskStore().tasks
+}
 
 </script>
 
@@ -12,9 +26,10 @@ const taskStore = useTaskStore();
             <span class="title">Задачи</span>
             <span class="description">Воодушевляющее описание страницы</span>
             <div class="lang d-flex flex-row gap-3">
-                <span>HTML</span>
-                <span>CSS</span>
-                <span>JAVASCRIPT</span>
+                <span :class="{ active: filter == -1 }" @click="allTasks()">ВCE</span>
+                <span :class="{ active: filter == 0 }" @click="changeLanguageFilter(0)">HTML</span>
+                <span :class="{ active: filter == 1 }" @click="changeLanguageFilter(1)">CSS</span>
+                <span :class="{ active: filter == 2 }" @click="changeLanguageFilter(2)">JAVASCRIPT</span>
             </div>
             <div class="filter d-flex flex-row gap-3">
                 <span>Популярные</span>
@@ -23,13 +38,17 @@ const taskStore = useTaskStore();
             </div>
         </div>
         <div class="d-flex flex-column gap-4">
-            <Tasks class="task" v-bind:key="index" v-for="(task, index) in taskStore.tasks" 
+            <Tasks class="task" :key="index" v-for="(task, index) in tasksStore"
                 :task="task" :taskFontSize="34" :taskLeft="30" :taskRight="70" :taskWidth="75"/>
         </div>
     </div>
 </template>
 
 <style scoped lang="scss">
+
+    .active {
+        color: #393B44 !important;
+    }
     .main {
         margin-left: 210px;
     }
