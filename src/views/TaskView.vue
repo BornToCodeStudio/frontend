@@ -335,12 +335,10 @@ function checkTextInHtmlElement(text: string, element: string, rulesLength: numb
     return text == innerHTML;
 }
 
-loadTaskFromStore();
-
-loadSolution();
-
 onMounted(() => {
-    createEditors('','','');
+    loadTaskFromStore();
+
+    loadSolution();
 });
 
 

@@ -23,7 +23,7 @@ async function signIn() {
         .post("/users/signIn", dto, { withCredentials: true })
         .then(async (response) => {
             if (response.status == 200) {
-                await useProfileStore().remember(login);
+                await useProfileStore().authenticate();
 
                 router.push("/profile/" + useProfileStore().getId());
             }
@@ -41,8 +41,6 @@ onMounted(async () => {
     let authorized = await useProfileStore().authenticate();
     if (authorized)
         router.push("/profile/" + useProfileStore().getId());
-
-    await useAxios().get("https://ipinfo.io").then((response) => console.log(`Ваш город: ${useProfileStore().translit(response.data.city)}`));
 });
 
 </script>

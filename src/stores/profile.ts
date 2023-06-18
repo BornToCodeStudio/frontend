@@ -74,16 +74,6 @@ export const useProfileStore = defineStore('profile', () => {
     let username = ref("");
     let id = ref(-1);
 
-    async function remember(login: string) {
-        authorized.value = true;
-        username.value = login;
-
-        await useAxios().get("/users/selfProfile", { withCredentials: true }).then(response => {
-            if (response.status == 200)
-                id.value = response.data;
-        });
-    }
-
     function isAuthorized() {
         return authorized.value;
     }
@@ -98,7 +88,18 @@ export const useProfileStore = defineStore('profile', () => {
 
     async function authenticate() {
         try {
-            return await useAxios().get("/users/authenticate", { withCredentials: true }).then((response) => response.status == 200);
+            let dto = await useAxios().get("/users/authenticate", { withCredentials: true })
+            .then((response) => {
+                return response.status == 200 ? response.data as Types.User : null;
+            });
+            if (!dto)
+                return false;
+
+            authorized.value = true;
+            username.value = dto.name;
+            id.value = dto.id;
+
+            return true;
         } catch (error) {
             console.log(error);
 
@@ -106,16 +107,14 @@ export const useProfileStore = defineStore('profile', () => {
         }
     }
 
-    function translit(word: string) {
-        //@ts-ignore
-        const converter = { 'sch': 'щ','yo': 'ё', 'zh': 'ж', 'ch': 'ч', 'sh': 'ш', 'yu': 'ю', 'ya': 'я','a': 'а', 'b': 'б', 'v': 'в', 'g': 'г', 'd': 'д','e': 'е', 'z': 'з', 'и': 'i', 'y': 'й', 'k': 'к','l': 'л', 'm': 'м', 'n': 'н', 'o': 'о', 'p': 'п','r': 'р', 's': 'с', 't': 'т', 'u': 'у', 'f': 'ф','h': 'х', 'c': 'ц', 'y': 'ы',};
-      
-        for (const [key, value] of Object.entries(converter)) {
-          word = word.split(key).join(value);
-        }
-      
-        return word;
-      }
+    async function getOtherProfile(id: number) {
+        let dto = await useAxios().get("/users/getProfile/" + id, { withCredentials: true })
+        .then(response => response.status == 200 ? response.data as Types.User : null).catch(error => console.log(error));
+        if (!dto)
+            return null;
 
-    return { media, achievements, remember, authenticate, isAuthorized, getUsername, getId, translit };
+        return dto;
+    }
+
+    return { media, achievements, authenticate, isAuthorized, getUsername, getId, getOtherProfile };
 });

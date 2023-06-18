@@ -30,4 +30,9 @@ declare namespace Types {
         id: number,
         name: string
     }
+
+    interface User {
+        id: number,
+        name: string
+    }
 }

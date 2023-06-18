@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { useProfileStore } from '@/stores/profile';
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+
+let load = ref(false);
+
+onMounted(async () => {
+    load.value = true;
+    await useProfileStore().authenticate();
+    load.value = false;
+});
 
 const username = computed(() => useProfileStore().isAuthorized() ? useProfileStore().getUsername() : "Вход");
 const link = computed(() => useProfileStore().isAuthorized() ? `/profile/${useProfileStore().getId()}` : "/signIn");
@@ -33,7 +41,7 @@ const link = computed(() => useProfileStore().isAuthorized() ? `/profile/${usePr
                             </RouterLink>
                         </li>
                         <li class="nav-item">
-                            <RouterLink :to="link" class="buttons">
+                            <RouterLink :to="link" class="buttons" v-if="!load">
                                 <button class="btn btn-light">
                                     <div class="d-flex align-items-center gap-1">
                                         <img src="../assets/avatar.png"/>
@@ -41,6 +49,7 @@ const link = computed(() => useProfileStore().isAuthorized() ? `/profile/${usePr
                                     </div>
                                 </button>
                             </RouterLink>
+                            <div class="spinner-border" role="status" v-else></div>
                         </li>
                     </ul>
                 </div>
