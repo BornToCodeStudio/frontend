@@ -6,6 +6,13 @@ import { ref } from 'vue'
 let tasksStore = ref(useTaskStore().tasks);
 let filter = ref(-1);
 
+const props = defineProps({
+    task: {
+        type: Object,
+        default: null
+    }
+})
+
 function changeLanguageFilter(numb: number) {
     filter.value = numb
 
@@ -14,8 +21,18 @@ function changeLanguageFilter(numb: number) {
 }
 
 function allTasks() {
-    filter.value = -1
-    tasksStore.value = useTaskStore().tasks
+    filter.value = -1;
+    tasksStore.value = useTaskStore().tasks;
+}
+
+function popularTasks() {
+    filter.value = 3;
+    tasksStore.value = useTaskStore().getTaskByLikesFilter()
+}
+
+function lastestTasks() {
+    filter.value = 4
+    tasksStore.value = useTaskStore().getTaskByDate()
 }
 
 </script>
@@ -32,9 +49,9 @@ function allTasks() {
                 <span :class="{ active: filter == 2 }" @click="changeLanguageFilter(2)">JAVASCRIPT</span>
             </div>
             <div class="filter d-flex flex-row gap-3">
-                <span>Популярные</span>
+                <span :class="{ active: filter == 3 }" @click="popularTasks()">Популярные</span>
                 <span>Количество решений</span>
-                <span>Последние</span>
+                <span :class="{ active: filter == 4 }" @click="lastestTasks()">Последние</span>
             </div>
         </div>
         <div class="d-flex flex-column gap-4">

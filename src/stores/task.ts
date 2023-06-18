@@ -15,6 +15,15 @@ export const useTaskStore = defineStore('task', () => {
         return tasks.value.filter(f => f.languages[filter])
     }
 
+    function getTaskByLikesFilter() : Array<Types.Task> {
+        return tasks.value.sort((a,b) => b.likes - a.likes)
+    }
+
+    function getTaskByDate()
+    {
+        return tasks.value.sort((a,b) => a.creationDate - b.creationDate)
+    }
+
     tasks.value.push({
         id: 2,
         title: "wadwadw",
@@ -23,6 +32,9 @@ export const useTaskStore = defineStore('task', () => {
         shortDescription: "Напишите код",
         codeExample: 'wadawdwa',
         languages: [true, false, false],
+        creationDate: 1718739251,
+        likes: 10,
+        views: 15,
         htmlStruct: {
             checkElementRules: htmlCheckElement.value
         }
@@ -35,6 +47,9 @@ export const useTaskStore = defineStore('task', () => {
         shortDescription: "Напишите код",
         codeExample: 'wadawdwa',
         languages: [false, true, false],
+        creationDate: 1687120451,
+        likes: 3,
+        views: 45,
         htmlStruct: {
             checkElementRules: htmlCheckElement.value
         }
@@ -47,9 +62,12 @@ export const useTaskStore = defineStore('task', () => {
         shortDescription: "Напишите код",
         codeExample: 'wadawdwa',
         languages: [false, false, true],
+        creationDate: 2002736051,
+        likes: 120,
+        views: 500,
         htmlStruct: {
             checkElementRules: htmlCheckElement.value
         }
     })
-    return { tasks, getTask, getTaskByLanguageFilter};
+    return { tasks, getTask, getTaskByLanguageFilter, getTaskByLikesFilter, getTaskByDate};
 })

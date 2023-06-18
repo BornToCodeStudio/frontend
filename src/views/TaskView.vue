@@ -337,7 +337,7 @@ function checkTextInHtmlElement(text: string, element: string, rulesLength: numb
 
 loadTaskFromStore();
 
-/* loadSolution(); */
+loadSolution();
 
 onMounted(() => {
     createEditors('','','');

@@ -102,7 +102,7 @@ async function signIn() {
     background-color: #D6E0F0;
     border: none;
     box-shadow: none;
-    width: 75px;
+    width: 50px;
 
     @media (max-width: 992px) {
 
@@ -120,7 +120,7 @@ async function signIn() {
     border: none;
     box-shadow: none;
     font-weight: 500;
-    width: 325px;
+    width: 350px;
     height: 75px;
     font-size: 24px;
     padding-left: 0;
@@ -177,52 +177,57 @@ async function signIn() {
 }
 
 .right {
-    height: 511px;
-
-    .login-input {
-        margin-top: 100px;
-    }
-
-    @media (max-width: 992px) {
-        justify-content: space-between !important;
-        height: 378px;
-
-        @mixin small-input {
-            width: 100%;
-
-            input {
-                padding: 10px;
-                text-align: center;
-
-                border-radius: 0.375rem !important;
-            }
-
-            .image {
-                display: none;
-                position: absolute;
-                opacity: 0;
-            }
-        }
-
+        height: 511px;
+        
         .login-input {
-            margin-top: 0;
-
-            @media (max-width: 470px) {
-                @include small-input();
-            }
+            width: 400px;
+            margin-top: 100px;
         }
-
-        .pwd-input {
-            @media (max-width: 470px) {
-                @include small-input();
+    
+        @media (max-width: 992px) {
+            justify-content: space-between !important;
+            height: 378px;
+            width: 100%;
+    
+            @mixin small-input {
+                width: 75%;
+    
+                input {
+                    padding: 10px;
+                    text-align: center;
+    
+                    border-radius: 0.375rem !important;
+                }
+    
+                .image {
+                    display: none;
+                    position: absolute;
+                    opacity: 0;
+                }
             }
-        }
+    
+            .login-input {
+                margin-top: 0;
 
-        .forgot-pwd {
-            margin-bottom: 0 !important;
+                @media (max-width: 470px) {
+                    @include small-input();
+            }
+            }
+
+            .pwd-input {
+                width: 400px;
+
+                @media (max-width: 470px) {
+                    @include small-input();
+            }
+        
+            }
+    
+            .forgot-pwd {
+                margin-bottom: 0 !important;
+            }
         }
     }
-}
 
 .center-line {
     width: 4px;

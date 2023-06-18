@@ -6,6 +6,10 @@ const props = defineProps({
         type: Object,
         default: null
     },
+    taskBackground: {
+        type: String,
+        default: 'src/assets/background.png'
+    },
     taskWidth: {
         type: Number,
         default: 45
@@ -31,7 +35,7 @@ const props = defineProps({
             <span>{{task.shortDescription}}</span>
             <div class="d-flex flex-row justify-content-between mt-5">
                 <div class="d-flex gap-3">
-                    <img src="../assets/avatar.png" class="rounded-circle" style="width: 28px; height: 28px;">
+                    <img src="../assets/avatar.png" class="rounded-circle" id="background" style="width: 28px; height: 28px;">
                     <span class="">{{task.author}}</span>
                 </div>
                 <div class="d-flex gap-3">
@@ -41,7 +45,9 @@ const props = defineProps({
                 </div>
             </div>
         </div>
-        <div class="rightSide d-flex flex-row" style="background-image: url('src/assets/background.png');" :style="{ width: `${taskRight}%` }">
+        <div class="rightSide d-flex flex-row"  :style="{ 
+            width: `${taskRight}%`, 
+            'background-image': `url(${taskBackground})` }">
             <div class="content">
                 <div></div>
                 <div class="start d-flex flex-column">
@@ -53,11 +59,11 @@ const props = defineProps({
                 <div class="info d-flex gap-3">
                     <div class="d-flex">
                         <img src="../assets/likes.png" style="width:26px; height: 26px; ">
-                        <span style="color: #F9595F;">10</span>
+                        <span style="color: #F9595F;">{{task.likes}}</span>
                     </div>
                     <div class="d-flex">
                         <img src="../assets/views.png" style="width:26px; height: 26px;">
-                        <span style="color: #59B6F9;">10</span>
+                        <span style="color: #59B6F9;">{{task.views}}</span>
                     </div>
                 </div>
             </div>
@@ -70,6 +76,7 @@ const props = defineProps({
     background: #F1F3F8;
     border-radius: 0.375rem 0 0 0.375rem;
 }
+
 
 .rightSide {
     border-radius: 0 0.375rem 0.375rem 0;

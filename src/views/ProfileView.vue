@@ -9,21 +9,26 @@ import 'swiper/css';
 
 import { useProfileStore } from '../stores/profile';
 import { useTaskStore } from '../stores/task';
+import { useAxios } from '@/stores/axios';
+import { ref } from 'vue';
 
 const profileStore = useProfileStore();
 const taskStore = useTaskStore();
-
+const selectedFile = ref(File);
 </script>
 
 <template>
 <div class="profile d-flex justify-content-around">
     <div class="d-flex flex-column gap-4">
         <div class="profile-info d-flex flex-row" style="margin-left: 30px;">
-            <div class="mihailo">
+            <div class="profile-column">
                 <div class="d-flex align-items-center gap-3">
                     <h1 class="nickname display-5">Никнейм</h1>
                     <div class="avatar rounded-circle">
-                        <img :src="defaultAvatar"/>
+                        <input id="file-input" class="select-file" type="file" ref="selectedFile"   >
+                        <label for="file-input">
+                            <img :src="defaultAvatar"/>
+                        </label>
                     </div>
                 </div>
                 <div class="info d-flex flex-column gap-3">
@@ -53,19 +58,16 @@ const taskStore = useTaskStore();
                 </swiper>
             </div>
         </div>  
-        <div class="tasks d-flex flex-row gap-4">
-                <Tasks class="task" v-bind:key="index" v-for="(task, index) in taskStore.tasks" 
-                :task="task" :taskFontSize="34" :taskLeft="50" :taskRight="50" :taskWidth="45"/>
+        <div class="tasks d-flex flex-column gap-4 flex-wrap">
+            <Tasks class="task" v-bind:key="index" v-for="(task, index) in taskStore.tasks" 
+            :task="task" :taskFontSize="34" :taskLeft="50" :taskRight="50" :taskWidth="45"/>
         </div>
     </div>  
 </div>
 </template>
 
 <style scoped lang="scss">
-
-.tasks {
-    flex-wrap: wrap;
-}   
+ 
 .task {
     width: 45%;
 }
@@ -77,7 +79,7 @@ const taskStore = useTaskStore();
     margin: 0 5% 0 5%;
 
     .profile-info {
-        .mihailo {
+        .profile-column {
             width: 50%;
 
             @media (max-width: 1203px) {
@@ -85,6 +87,10 @@ const taskStore = useTaskStore();
             }
         }
     }
+}
+
+.select-file {
+    display:none;
 }
 
 .avatar {
@@ -95,6 +101,12 @@ const taskStore = useTaskStore();
     box-shadow: 0px 0px 9px 15px rgba(214, 224, 240, 0.3);
     background-color: rgb(214, 224, 240, 0.6);
     text-align: center;
+    opacity: 1;
+
+        &:hover {
+            opacity: 0.5;
+            color: #D6E0F0;
+        }
 
     img {
         width: 100px;
