@@ -1,4 +1,62 @@
 <script setup lang="ts">
+import router from '@/router';
+import { useAxios } from '@/stores/axios';
+import { ref } from 'vue';
+
+let loginValidation = ref(false);
+let pwdValidation = ref(false);
+const loginInput = ref<HTMLInputElement | null>(null);
+const passwordInput = ref<HTMLInputElement | null>(null);
+
+async function signUp() {
+    let loginCheck = checkLogin();
+    let passwordCheck = checkPassword();
+    if (!loginCheck || !passwordCheck)
+        return;
+
+    let dto = {
+        Name: loginInput.value?.value,
+        Password: passwordInput.value?.value
+    }
+
+    let response = await useAxios()
+    .post("/users/signUp", dto, { withCredentials: true })
+    .then((response) => response)
+    .catch((request) => alert("Не удалось зарегистрироваться. " + request.message));
+    if (!response)
+        return;
+
+    if (response.status == 200) {
+        alert("Вы успешно зарегистрированы. Теперь авторизуйтесь");
+
+        router.push("/signIn");
+    }
+    else {
+        alert("Не удалось зарегистрироваться. " + response.data);
+    }
+}
+
+function checkLogin() {
+    if (!loginInput.value || loginInput.value.value.length == 0) {
+        loginValidation.value = true;
+        setTimeout(() => loginValidation.value = false, 2000);
+
+        return false;
+    }
+
+    return true;
+}
+
+function checkPassword() {
+    if (!passwordInput.value || passwordInput.value.value.length == 0) {
+        pwdValidation.value = true;
+        setTimeout(() => pwdValidation.value = false, 2000);
+
+        return false;
+    }
+
+    return true;
+}
 </script>
 
 <template>

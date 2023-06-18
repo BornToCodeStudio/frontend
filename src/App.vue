@@ -12,6 +12,6 @@ import NavBar from './components/NavBar.vue'
 
 <style scoped lang="scss">
 .r {
-  margin-top: 35px;
+  margin-top: 50px !important;
 }
 </style>
