@@ -4,6 +4,7 @@ import telegram from '../assets/telegram.png'
 import vk from '../assets/vk.png'
 import discord from '../assets/discord.png'
 import github from '../assets/github.png'
+import { useAxios } from './axios'
 
 export const useProfileStore = defineStore('profile', () => {
     type MediaType = {
@@ -70,6 +71,35 @@ export const useProfileStore = defineStore('profile', () => {
     });
 
     let authorized = ref(false);
+    let username = ref("");
+    let id = ref(-1);
 
-    return { media, achievements, authorized };
+    function remember(login: string) {
+        authorized.value = true;
+        username.value = login;
+    }
+
+    function isAuthorized() {
+        return authorized.value;
+    }
+
+    function getUsername() {
+        return username.value;
+    }
+
+    function getId() {
+        return id.value;
+    }
+
+    async function authenticate() {
+        try {
+            return await useAxios().get("/users/authenticate").then((response) => response.status == 200);
+        } catch (error) {
+            console.log(error);
+
+            return false;
+        }
+    }
+
+    return { media, achievements, remember, authenticate, isAuthorized, getUsername, getId };
 });

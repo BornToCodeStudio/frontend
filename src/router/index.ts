@@ -29,7 +29,7 @@ const router = createRouter({
       component: TaskView
     },
     {
-      path: '/profile/',
+      path: '/profile/:id?',
       name: 'profile',
       component: ProfileView
     }

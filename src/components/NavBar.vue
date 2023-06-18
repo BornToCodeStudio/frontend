@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { useProfileStore } from '@/stores/profile';
+import { computed } from 'vue';
+
+const username = computed(() => useProfileStore().isAuthorized() ? useProfileStore().getUsername() : "Вход");
+const link = computed(() => useProfileStore().isAuthorized() ? `/profile/${useProfileStore().getId()}` : "/signIn");
 </script>
 
 <template>
@@ -28,11 +33,11 @@
                             </RouterLink>
                         </li>
                         <li class="nav-item">
-                            <RouterLink to="/signIn" class="buttons">
+                            <RouterLink :to="link" class="buttons">
                                 <button class="btn btn-light">
                                     <div class="d-flex align-items-center gap-1">
                                         <img src="../assets/avatar.png"/>
-                                        <span>Вход</span>
+                                        <span>{{ username }}</span>
                                     </div>
                                 </button>
                             </RouterLink>

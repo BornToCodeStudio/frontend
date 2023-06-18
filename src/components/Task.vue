@@ -26,7 +26,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="main container-fluid p-0 d-flex flex-row rounded-2 border border-2 border-dark" style="height: 160px;" :style="{ width: `${taskWidth}%` }">
+    <div class="main p-0 d-flex flex-row rounded-2 border border-2 border-dark" style="height: 160px;" :style="{ width: `${taskWidth}%` }">
         <div class="leftSide d-flex flex-column justify-content-around p-2 border-end border-dark" :style="{ width: `${taskLeft}%` }">
             <span>{{task.shortDescription}}</span>
             <div class="d-flex flex-row justify-content-between mt-5">

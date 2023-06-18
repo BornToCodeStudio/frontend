@@ -18,7 +18,7 @@ const taskStore = useTaskStore();
 <template>
 <div class="profile d-flex justify-content-around">
     <div class="d-flex flex-column gap-4">
-        <div class="profile-info d-flex flex-row" style="margin-left: 30px;">
+        <div class="profile-info d-flex flex-row">
             <div class="mihailo">
                 <div class="d-flex align-items-center gap-3">
                     <h1 class="nickname display-5">Никнейм</h1>
@@ -46,16 +46,16 @@ const taskStore = useTaskStore();
             </div>
             <div class="achievements d-flex flex-column">
                 <h1 class="display-5">Достижения:</h1>
-                <swiper :slides-per-view="5" style="width: 500px; height: 150px;" class="mySwiper">
+                <swiper :slides-per-view="5" style="width: 100%; height: 150px; padding-left: 1.5rem" class="mySwiper">
                     <swiper-slide :key="index" v-for="(item, index) in profileStore.achievements">
                         <Achievement class="ach" :name="item.name"/>
                     </swiper-slide>
                 </swiper>
             </div>
         </div>  
-        <div class="tasks d-flex flex-row gap-4">
+        <div class="tasks d-flex flex-row justify-content-between gap-4">
                 <Tasks class="task" v-bind:key="index" v-for="(task, index) in taskStore.tasks" 
-                :task="task" :taskFontSize="34" :taskLeft="50" :taskRight="50" :taskWidth="45"/>
+                :task="task" :taskFontSize="34" :taskLeft="50" :taskRight="50" :taskWidth="48.5"/>
         </div>
     </div>  
 </div>
@@ -125,7 +125,7 @@ const taskStore = useTaskStore();
         font-size: 24px;
     }
 
-    gap: 100px;
+    gap: 65px;
     margin-top: 25px;
 
     @media (max-width: 579px) {

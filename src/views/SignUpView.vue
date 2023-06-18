@@ -1,4 +1,39 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
+let loginValidation = ref(false);
+let pwdValidation = ref(false);
+const loginInput = ref<HTMLInputElement | null>(null);
+const passwordInput = ref<HTMLInputElement | null>(null);
+
+function signUp() {
+    let loginCheck = checkLogin();
+    let passwordCheck = checkPassword();
+    if (!loginCheck || !passwordCheck)
+        return;
+}
+
+function checkLogin() {
+    if (!loginInput.value || loginInput.value.value.length == 0) {
+        loginValidation.value = true;
+        setTimeout(() => loginValidation.value = false, 2000);
+
+        return false;
+    }
+
+    return true;
+}
+
+function checkPassword() {
+    if (!passwordInput.value || passwordInput.value.value.length == 0) {
+        pwdValidation.value = true;
+        setTimeout(() => pwdValidation.value = false, 2000);
+
+        return false;
+    }
+
+    return true;
+}
 </script>
 
 <template>
@@ -12,15 +47,27 @@
             <div class="image input-group-text justify-content-center" id="basic-addon1">
                 <img src="../assets/avatar_gray.png" />
             </div>
-            <input type="text" class="form-control" placeholder="BornToCode" aria-label="BornToCode" aria-describedby="basic-addon1">
+            <input ref="loginInput" type="text" class="form-control" placeholder="BornToCode" aria-label="BornToCode" aria-describedby="basic-addon1">
         </div>
         <div class="pwd-input input-group">
             <div class="image input-group-text justify-content-center" id="basic-addon1">
                 <img src="../assets/key_gray.png" />
             </div>
-            <input type="text" class="form-control" placeholder="Желаемый пароль" aria-label="Пароль" aria-describedby="basic-addon1">
+            <input ref="passwordInput" type="text" class="form-control" placeholder="Желаемый пароль" aria-label="Пароль" aria-describedby="basic-addon1">
         </div>
-        <button class="sign-up-button btn btn-light">
+        <Transition>
+            <div class="login-validation" v-if="loginValidation">
+                <img src="../assets/warning.png" />
+                <span>Заполните это поле</span>
+            </div>
+        </Transition>
+        <Transition>
+            <div class="pwd-validation" v-if="pwdValidation">
+                <img src="../assets/warning.png" />
+                <span>Заполните это поле</span>
+            </div>
+        </Transition>
+        <button class="sign-up-button btn btn-light" @click="signUp()">
             <span>Зарегистрироваться</span>
         </button>
         <a href="#" class="forgot-pwd mb-5 text-center">Регистрируясь вы соглашаетесь с условиями
@@ -30,6 +77,16 @@
 </template>
 
 <style scoped lang="scss">
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 .sign-up-button {
     background-color: #F1F3F8;
     border-color: #F1F3F8;
@@ -187,5 +244,34 @@
     text-decoration: underline;
     color: #393B44;
     font-size: 20px;
+}
+
+@mixin validation {
+    position: absolute;
+    margin-left: 50rem;
+    margin-top: 15.7rem;
+    display: flex;
+    width: 200px;
+    gap: 5px;
+
+    span {
+        color: rgb(221, 80, 80);
+        font-size: 18px;
+    }
+
+    img {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+.login-validation {
+    @include validation();
+
+    margin-top: 8rem;
+}
+
+.pwd-validation {
+    @include validation();
 }
 </style>

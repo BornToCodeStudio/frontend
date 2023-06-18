@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useAxios } from '@/stores/axios';
 import { useProfileStore } from '@/stores/profile';
+import router from '@/router';
 
 const loginInput = ref<HTMLInputElement | null>(null);
 const passwordInput = ref<HTMLInputElement | null>(null);
 
 async function signIn() {
     try {
+        const login = loginInput.value?.value;
+        const password = passwordInput.value?.value;
+        if (!login || !password)
+            return;
+
         let dto = {
             Name: loginInput.value?.value,
             Password: passwordInput.value?.value
@@ -17,17 +23,25 @@ async function signIn() {
         .post("/users/signIn", dto, { withCredentials: true })
         .then(response => {
             if (response.status == 200)
-                useProfileStore().authorized = true;
+                useProfileStore().remember(login);
             else if (response.status == 404)
-                alert("Такого профиля не существует");
+                alert("Неверный логин или пароль");
         })
         .catch(error => {
-            alert("Не удалось авторизоваться. " + error.response.data);
+            alert("Не удалось авторизоваться" + error.response.data);
         });
     } catch (error) {
         console.log(error);
     }
 }
+
+
+onMounted(async () => {
+    let authorized = await useProfileStore().authenticate();
+    if (authorized)
+        router.push("/profile/" + useProfileStore().getId());
+});
+
 </script>
 
 <template>
