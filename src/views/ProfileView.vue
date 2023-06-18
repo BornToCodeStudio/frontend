@@ -33,6 +33,7 @@ onMounted(async () => {
                 <div class="d-flex align-items-center gap-3">
                     <h1 class="nickname display-5">{{ user?.name }}</h1>
                     <div class="avatar rounded-circle">
+                        <span class="change-avater-text">Сменить аватарку</span>
                         <input id="file-input" class="select-file" type="file" ref="selectedFile">
                         <label for="file-input">
                             <img :src="defaultAvatar"/>
@@ -101,7 +102,22 @@ onMounted(async () => {
     display:none;
 }
 
+.change-avater-text {
+    line-height: 30px;
+    position: absolute;
+    padding-top: 4vh;
+    width:100px;
+    display:unset;
+    font-size: 20px;
+    font-weight: 700;
+    opacity: 0;
+    color: #8D93AB;
+    -webkit-text-stroke:0.5px #F1F3F8;
+    transition: 0.5s;
+}
+
 .avatar {
+    word-wrap: break-word;
     width: 120px;
     height: 120px;
     -webkit-box-shadow: 0px 0px 9px 15px rgba(214, 224, 240, 0.3);
@@ -110,17 +126,25 @@ onMounted(async () => {
     background-color: rgb(214, 224, 240, 0.6);
     text-align: center;
     opacity: 1;
-
-        &:hover {
-            opacity: 0.5;
-            color: #D6E0F0;
-        }
-
+    
     img {
+        position: relative;
         width: 100px;
         height: 100px;
         margin-top: 4px;
+        transition: 0.5s;
     }
+
+    &:hover {
+        img {
+            opacity: 0;
+        }
+        .change-avater-text {
+            display: unset;
+            opacity: 1;
+        }
+    }
+
 }
 
 .nickname {

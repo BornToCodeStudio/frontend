@@ -267,8 +267,8 @@ async function loadSolution() {
 function createEditors(htmlText: string, cssText: string, jsText: string) {
     let theme = EditorView.theme({
         ".cm-scroller": {"height":"450px"},
-        ".cm-activeLine": {"background":"#ffcbb3"},
-        ".cm-activeLineGutter": {"background-color":"#ffcbb3"},
+        ".cm-activeLine": {"background":"#D6E0F0;"},
+        ".cm-activeLineGutter": {"background-color":"#F1F3F8;"},
         ".ͼi": {"color":"#FF570C"}
     });
 
@@ -336,9 +336,8 @@ function checkTextInHtmlElement(text: string, element: string, rulesLength: numb
 }
 
 onMounted(() => {
-    loadTaskFromStore();
-
     loadSolution();
+    loadTaskFromStore();
 });
 
 
