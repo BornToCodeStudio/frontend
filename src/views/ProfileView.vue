@@ -20,7 +20,7 @@ const selectedFile = ref(File);
 <template>
 <div class="profile d-flex justify-content-around">
     <div class="d-flex flex-column gap-4">
-        <div class="profile-info d-flex flex-row" style="margin-left: 30px;">
+        <div class="profile-info d-flex flex-row">
             <div class="profile-column">
                 <div class="d-flex align-items-center gap-3">
                     <h1 class="nickname display-5">Никнейм</h1>
@@ -58,7 +58,7 @@ const selectedFile = ref(File);
                 </swiper>
             </div>
         </div>  
-        <div class="tasks d-flex flex-row justify-content-between gap-4">
+        <div class="tasks d-flex flex-row justify-content-between gap-4 flex-wrap">
                 <Tasks class="task" v-bind:key="index" v-for="(task, index) in taskStore.tasks" 
                 :task="task" :taskFontSize="34" :taskLeft="50" :taskRight="50" :taskWidth="48.5"/>
         </div>
