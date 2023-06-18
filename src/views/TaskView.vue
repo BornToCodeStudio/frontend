@@ -6,9 +6,9 @@
                 <div @click="changeOption(2)" :class="optionType == 2 ? 'selected' : 'option'">CSS</div>
                 <div @click="changeOption(3)" :class="optionType == 3 ? 'selected' : 'option'">JS</div>
             </div>
-            <div class="html-editor editor" v-show="optionType == 1" ref="html"></div>
-            <div class="css-editor editor" v-show="optionType == 2" ref="css"></div>
-            <div class="js-editor editor" v-show="optionType == 3" ref="js"></div>
+            <div class="html-editor editor" v-show="optionType == 1" ref="htmlDoc"></div>
+            <div class="css-editor editor" v-show="optionType == 2" ref="cssDoc"></div>
+            <div class="js-editor editor" v-show="optionType == 3" ref="jsDoc"></div>
             <div class="buttons">
                 <div class="upload__file">Загрузить файл</div>
                 <div class="preview" @click="preview()">Предпросмотр</div>
@@ -105,7 +105,7 @@ function getPreview() {
     return getText(1) + `<style>${getText(2)}</style>`;
 };
 function preview() {
-    srcDoc = toRef(getPreview());
+    srcDoc.value = getPreview();
 };
 function getText(type: Number) {
     let editor = null;
@@ -293,6 +293,8 @@ function createEditors(htmlText: string, cssText: string, jsText: string) {
             extensions: [basicSetup, javascript(), theme]
         })
     });
+
+    console.log(htmlDoc)
 };
 function check() {
     let rules = currentTask.value?.htmlStruct.checkElementRules
