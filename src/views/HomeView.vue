@@ -4,36 +4,42 @@ import { useTaskStore } from '../stores/task';
 import { ref } from 'vue'
 
 let tasksStore = ref(useTaskStore().tasks);
-let filter = ref(-1);
+let filter = ref(0);
+let subFilter = ref(0)
 
 const props = defineProps({
     task: {
         type: Object,
         default: null
-    }
+    }   
 })
 
-function changeLanguageFilter(numb: number) {
-    filter.value = numb
 
-    if (tasksStore.value)
-        tasksStore.value= useTaskStore().getTaskByLanguageFilter(numb);
+function getTaskByLanguageFilter(numb: number) {
+    filter.value = numb + 1
+
+     tasksStore.value = useTaskStore().tasks.filter(f => f.languages[numb])
+
 }
 
-function allTasks() {
-    filter.value = -1;
-    tasksStore.value = useTaskStore().tasks;
+function getTaskByLikesFilter() {
+    subFilter.value = 0
+
+    tasksStore.value = tasksStore.value.sort((a,b) => b.likes - a.likes)
 }
 
-function popularTasks() {
-    filter.value = 3;
-    tasksStore.value = useTaskStore().getTaskByLikesFilter()
+function getTaskByDate() {
+    subFilter.value = 1
+
+    tasksStore.value = tasksStore.value.sort((a,b) => b.creationDate - a.creationDate)
 }
 
-function lastestTasks() {
-    filter.value = 4
-    tasksStore.value = useTaskStore().getTaskByDate()
+function getAllTasks() {
+    filter.value = 0;  
+    tasksStore.value = useTaskStore().tasks 
 }
+
+
 
 </script>
 
@@ -43,15 +49,15 @@ function lastestTasks() {
             <span class="title">Задачи</span>
             <span class="description">Воодушевляющее описание страницы</span>
             <div class="lang d-flex flex-row gap-3">
-                <span :class="{ active: filter == -1 }" @click="allTasks()">ВCE</span>
-                <span :class="{ active: filter == 0 }" @click="changeLanguageFilter(0)">HTML</span>
-                <span :class="{ active: filter == 1 }" @click="changeLanguageFilter(1)">CSS</span>
-                <span :class="{ active: filter == 2 }" @click="changeLanguageFilter(2)">JAVASCRIPT</span>
+                <span :class="{ active: filter == 0 }" @click="getAllTasks()">ВCE</span>
+                <span :class="{ active: filter == 1 }" @click="getTaskByLanguageFilter(0)">HTML</span>
+                <span :class="{ active: filter == 2 }" @click="getTaskByLanguageFilter(1)">CSS</span>
+                <span :class="{ active: filter == 3 }" @click="getTaskByLanguageFilter(2)">JAVASCRIPT</span>
             </div>
             <div class="filter d-flex flex-row gap-3">
-                <span :class="{ active: filter == 3 }" @click="popularTasks()">Популярные</span>
+                <span :class="{ active: subFilter == 0 }" @click="getTaskByLikesFilter()">Популярные</span>
                 <span>Количество решений</span>
-                <span :class="{ active: filter == 4 }" @click="lastestTasks()">Последние</span>
+                <span :class="{ active: subFilter == 1 }" @click="getTaskByDate()">Последние</span>
             </div>
         </div>
         <div class="d-flex flex-column gap-4">

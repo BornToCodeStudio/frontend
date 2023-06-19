@@ -126,8 +126,10 @@ onMounted(async () => {
     background-color: rgb(214, 224, 240, 0.6);
     text-align: center;
     opacity: 1;
+    cursor: pointer;
     
     img {
+        cursor: pointer;
         position: relative;
         width: 100px;
         height: 100px;
