@@ -10,7 +10,7 @@ import 'swiper/css';
 import { useProfileStore } from '../stores/profile';
 import { useTaskStore } from '../stores/task';
 import { useAxios } from '@/stores/axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, onUpdated, ref } from 'vue';
 import router from '@/router';
 import { useRoute } from 'vue-router';
 
@@ -23,10 +23,14 @@ let user = ref<Types.User | null>(null);
 onMounted(async () => {
     user.value = await useProfileStore().getOtherProfile(Number(useRoute().params["id"]));
 });
+
+onUpdated(async () => {
+    user.value = await useProfileStore().getOtherProfile(Number(useRoute().params["id"]));
+});
 </script>
 
 <template>
-<div class="profile d-flex justify-content-around">
+<div class="profile d-flex justify-content-around" v-if="user">
     <div class="d-flex flex-column gap-4">
         <div class="profile-info d-flex flex-row">
             <div class="profile-column">
@@ -73,10 +77,22 @@ onMounted(async () => {
         </div>
     </div>  
 </div>
+<div v-else class="notfound align-middle">
+    <h1>Такого профиля не существует :(</h1>
+</div>
 </template>
 
 <style scoped lang="scss">
- 
+.notfound {
+    text-align: center;
+    width: 100%;
+    height: 100vh;
+
+    h1 {
+        color: #393B44;
+    }
+}
+
 .task {
     width: 45%;
 }
