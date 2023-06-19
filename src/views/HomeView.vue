@@ -5,7 +5,8 @@ import { onMounted, ref } from 'vue'
 
 let tasksStore = ref(useTaskStore().tasks);
 let filter = ref(0);
-let subFilter = ref(0)
+let subFilter = ref(0);
+let active = ref(0);
 
 const props = defineProps({
     task: {
@@ -16,23 +17,32 @@ const props = defineProps({
 
 function getTaskByLanguageFilter(numb: number) {
     filter.value = numb + 1
-
     tasksStore.value = useTaskStore().tasks.filter(f => f.languages[numb])
+
+    if(subFilter.value == 0)
+        tasksStore.value = tasksStore.value.sort((a,b) => b.likes - a.likes)
+    if(subFilter.value == 1)
+        tasksStore.value = tasksStore.value.sort((a,b) => b.creationDate - a.creationDate)
 }
 
 function getTaskByLikesFilter() {
     subFilter.value = 0
-    tasksStore.value = useTaskStore().tasks.sort((a,b) => b.likes - a.likes)
+    tasksStore.value = tasksStore.value.sort((a,b) => b.likes - a.likes)
 
 }
 
 function getTaskByDate() {
     subFilter.value = 1
-    tasksStore.value = useTaskStore().tasks.sort((a,b) => b.creationDate - a.creationDate)
+    tasksStore.value = tasksStore.value.sort((a,b) => b.creationDate - a.creationDate)
+}
+
+function getTaskBycound() {
+    subFilter.value = 2
+    tasksStore.value = tasksStore.value.sort((a,b) => b.solutionsCount - a.solutionsCount)
 }
 
 function getAllTasks() {
-    filter.value = 0;  
+    filter.value = 0; 
     tasksStore.value = useTaskStore().tasks 
 }
 
@@ -57,7 +67,7 @@ onMounted(async () => {
             </div>
             <div class="filter d-flex flex-row gap-3">
                 <span :class="{ active: subFilter == 0 }" @click="getTaskByLikesFilter()">Популярные</span>
-                <span>Количество решений</span>
+                <span :class="{ active: subFilter == 2 }" @click="getTaskBycound()">Количество решений</span>
                 <span :class="{ active: subFilter == 1 }" @click="getTaskByDate()">Последние</span>
             </div>
         </div>

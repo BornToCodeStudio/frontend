@@ -9,6 +9,7 @@ declare namespace Types {
         codeExample: string,
         languages: Array<boolean>,
         creationDate: number,
+        solutionsCount: number,
         likes: number;
         views: number
         htmlStruct: { 
