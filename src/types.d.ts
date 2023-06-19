@@ -3,6 +3,7 @@ declare namespace Types {
         id: number,
         title: string,
         author: string,
+        authorId: number,
         fullDescription: string,
         shortDescription: string,
         codeExample: string,
@@ -33,6 +34,8 @@ declare namespace Types {
 
     interface User {
         id: number,
-        name: string
+        name: string,
+        country: string,
+        createdAt: string
     }
 }

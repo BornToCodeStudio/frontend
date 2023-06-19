@@ -14,9 +14,14 @@ async function signUp() {
     if (!loginCheck || !passwordCheck)
         return;
 
+    let country = await useAxios()
+    .get("https://api.ipdata.co")
+    .then((response) => response.status == 200 ? response.data.country : "Неизвестно");
+
     let dto = {
         Name: loginInput.value?.value,
-        Password: passwordInput.value?.value
+        Password: passwordInput.value?.value,
+        Country: country
     }
 
     let response = await useAxios()
@@ -80,7 +85,7 @@ function checkPassword() {
                 </div>
                 <input ref="passwordInput" type="password" class="form-control" placeholder="Желаемый пароль" aria-label="Пароль" aria-describedby="basic-addon1">
             </div>
-            <button class="sign-in-button btn btn-light">
+            <button class="sign-in-button btn btn-light" @click="signUp()">
                 <span>Зарегистрироваться</span>
             </button>
             <div href="#" class="forgot-pwd mb-5">
