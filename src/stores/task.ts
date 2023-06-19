@@ -21,6 +21,7 @@ export const useTaskStore = defineStore('task', () => {
         codeExample: 'wadawdwa',
         languages: [true, false, false],
         creationDate: 1718739251,
+        solutionsCount: 17,
         likes: 10,
         views: 15,
         htmlStruct: {
@@ -37,6 +38,7 @@ export const useTaskStore = defineStore('task', () => {
         codeExample: 'wadawdwa',
         languages: [false, true, false],
         creationDate: 1887120451,
+        solutionsCount: 1,
         likes: 3,
         views: 45,
         htmlStruct: {
@@ -53,6 +55,7 @@ export const useTaskStore = defineStore('task', () => {
         codeExample: 'wadawdwa',
         languages: [false, false, true],
         creationDate: 2002736051,
+        solutionsCount: 749,
         likes: 60,
         views: 500,
         htmlStruct: {
@@ -69,6 +72,7 @@ export const useTaskStore = defineStore('task', () => {
         codeExample: 'wadawdwa',
         languages: [true, false, false],
         creationDate: 1818739251,
+        solutionsCount: 5179,
         likes: 120,
         views: 15,
         htmlStruct: {
@@ -85,6 +89,7 @@ export const useTaskStore = defineStore('task', () => {
         codeExample: 'wadawdwa',
         languages: [false, true, false],
         creationDate: 1687120451,
+        solutionsCount: 1651,
         likes: 9,
         views: 45,
         htmlStruct: {
@@ -101,6 +106,7 @@ export const useTaskStore = defineStore('task', () => {
         codeExample: 'wadawdwa',
         languages: [false, false, true],
         creationDate: 1902736051,
+        solutionsCount: 50,
         likes: 120,
         views: 500,
         htmlStruct: {
