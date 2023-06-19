@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import defaultBackground from '../assets/background.png';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
@@ -8,7 +9,7 @@ const props = defineProps({
     },
     taskBackground: {
         type: String,
-        default: 'src/assets/background.png'
+        default: defaultBackground
     },
     taskWidth: {
         type: Number,
