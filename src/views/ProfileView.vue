@@ -97,14 +97,14 @@ const selectedFile = ref(File);
 .change-avater-text {
     line-height: 30px;
     position: absolute;
-    padding-top: 4vh;
+    height: 60px;
+    padding-top: 2%;
     width:100px;
     display:unset;
     font-size: 20px;
     font-weight: 700;
     opacity: 0;
-    color: #8D93AB;
-    -webkit-text-stroke:0.5px #F1F3F8;
+    color: #393B44;
     transition: 0.5s;
 }
 
