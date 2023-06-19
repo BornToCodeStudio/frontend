@@ -132,7 +132,7 @@ async function solution() {
 
     let verify = false;
     try {
-        verify = await useAxios().get("/users/verifySignIn", { withCredentials: true }).then((response) => {
+        verify = await useAxios().get("/users/authenticate", { withCredentials: true }).then((response) => {
                 return response.status == 200;
         });
     }
@@ -163,16 +163,10 @@ async function solution() {
     }
 
     if (added) {
-        await useAxios()
-        .put('/solutions/update',
-            { data: dto },
-            { withCredentials: true })
+        await useAxios().put('/solutions/update', dto, { withCredentials: true })
     }
     else {
-        await useAxios()
-        .put("/solutions/add",
-            { data: dto },
-            { withCredentials: true })
+        await useAxios().put("/solutions/add", dto, { withCredentials: true })
     }
 
 };
@@ -181,7 +175,7 @@ async function loadSolution() {
     let verify = false;
     try {
         verify = await useAxios()
-        .post("/users/verifySignIn", { withCredentials: true })
+        .get("/users/authenticate", { withCredentials: true })
         .then((response) => {
                 return response.status == 200;
         });
@@ -214,10 +208,7 @@ async function loadSolution() {
             Title: currentTask.value?.title
         }
 
-        await useAxios()
-        .put("/solutions/add",
-            { data: dto },
-            { withCredentials: true })
+        await useAxios().put("/solutions/add", dto, { withCredentials: true })
     }
 
     let id = await useAxios()

@@ -73,6 +73,7 @@ export const useProfileStore = defineStore('profile', () => {
     let authorized = ref(false);
     let username = ref("");
     let id = ref(-1);
+    let avatarUrl = ref("");
 
     function isAuthorized() {
         return authorized.value;
@@ -116,5 +117,63 @@ export const useProfileStore = defineStore('profile', () => {
         return dto;
     }
 
-    return { media, achievements, authenticate, isAuthorized, getUsername, getId, getOtherProfile };
+    async function sendFile(file: File) {
+        if (!file)
+            return;
+
+        let formData = new FormData();
+        formData.append('formFile', file);
+
+        await useAxios().put("/users/sendPhoto", formData, { withCredentials: true }).then((response) => {
+            if (response.status == 200) {
+                loadAvatar(username.value);
+            }
+        });
+    }
+
+    async function loadAvatar(name: string) {
+        let data = null;
+        try {
+            data = await getAvatar(name);
+        }
+        catch(error) {
+            console.log(error);
+            
+            avatarUrl.value = "";
+
+            return false;
+        }
+
+        if (!data) {
+            avatarUrl.value = "";
+
+            return false;
+        }
+
+        avatarUrl.value = "data:image/jpg;base64," + data;
+
+        return true;
+    }
+
+    async function getAvatar(name: string) {
+        try {
+            return await useAxios().get("/users/getPhoto/" + name, { withCredentials: true }).then((response) => {
+                if (response.status == 200)
+                    return response.data.avatar as string;
+
+                return "";
+            });
+        }
+        catch(error) {
+            console.log(error);
+            
+            return "";
+        }
+    }
+
+    function getAvatarUrl() {
+        return avatarUrl.value;
+    }
+
+    return { media, achievements, authenticate, isAuthorized, getUsername, getId, getOtherProfile, sendFile, getAvatarUrl, loadAvatar, getAvatar };
 });

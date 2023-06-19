@@ -25,9 +25,10 @@ export const useTaskStore = defineStore('task', () => {
     }
 
     tasks.value.push({
-        id: 2,
+        id: 1,
         title: "wadwadw",
         author: "horex",
+        authorId: 1,
         fullDescription: "Ваша первая задача",
         shortDescription: "Напишите код",
         codeExample: 'wadawdwa',
@@ -40,9 +41,10 @@ export const useTaskStore = defineStore('task', () => {
         }
     })
     tasks.value.push({
-        id: 1,
+        id: 2,
         title: "wadwadw",
         author: "cowfucker",
+        authorId: 2,
         fullDescription: "Ваша первая задача",
         shortDescription: "Напишите код",
         codeExample: 'wadawdwa',
@@ -55,9 +57,10 @@ export const useTaskStore = defineStore('task', () => {
         }
     })
     tasks.value.push({
-        id: 1,
+        id: 3,
         title: "wadwadw",
         author: "cowfucker",
+        authorId: 2,
         fullDescription: "Ваша первая задача",
         shortDescription: "Напишите код",
         codeExample: 'wadawdwa',

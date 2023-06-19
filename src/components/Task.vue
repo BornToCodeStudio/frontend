@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import defaultBackground from '../assets/background.png';
+import defaultAvatar from '../assets/avatar.png'
+import { useProfileStore } from '../stores/profile';
+import router from '@/router';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
@@ -28,6 +32,22 @@ const props = defineProps({
         default: 46
     }
 });
+
+let avatarUrl = ref("");
+
+async function avatar() {
+    let result = await useProfileStore().getAvatar(props.task.author);
+
+    avatarUrl.value = result?.length > 0 ? "data:image/jpg;base64," + result : defaultAvatar;
+}
+
+async function goToProfile() {
+    router.push("/profile/" + props.task.authorId);
+}
+
+onMounted(() => {
+    avatar();
+});
 </script>
 
 <template>
@@ -35,9 +55,9 @@ const props = defineProps({
         <div class="leftSide d-flex flex-column justify-content-around p-2 border-end border-dark" :style="{ width: `${taskLeft}%` }">
             <span>{{task.shortDescription}}</span>
             <div class="d-flex flex-row justify-content-between mt-5">
-                <div class="d-flex gap-3">
-                    <img src="../assets/avatar.png" class="rounded-circle" id="background" style="width: 28px; height: 28px;">
-                    <span class="">{{task.author}}</span>
+                <div class="author d-flex gap-3" @click="goToProfile()">
+                    <img :src="avatarUrl" class="rounded-circle" id="background" style="width: 28px; height: 28px;">
+                    <span class="">{{ task.author }}</span>
                 </div>
                 <div class="d-flex gap-3">
                     <img v-if="task.languages[0]" src="../assets/html.png" ref="html" style="width: 20px; height: 20px;">
@@ -129,5 +149,11 @@ const props = defineProps({
         font-weight: 400;
         font-size: 21px;
     } 
+}
+
+.author {
+    &:hover {
+        cursor: pointer;
+    }
 }
 </style>
