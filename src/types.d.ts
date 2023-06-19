@@ -36,6 +36,7 @@ declare namespace Types {
         id: number,
         name: string,
         country: string,
-        createdAt: string
+        createdAt: string,
+        tasks: Array<Task>
     }
 }

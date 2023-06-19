@@ -114,6 +114,9 @@ export const useProfileStore = defineStore('profile', () => {
         if (!dto)
             return null;
 
+        let tasks = await loadTasks(dto.name);
+        dto.tasks = tasks;
+
         return dto;
     }
 
@@ -173,6 +176,18 @@ export const useProfileStore = defineStore('profile', () => {
 
     function getAvatarUrl() {
         return avatarUrl.value;
+    }
+
+    async function loadTasks(username: string) {
+        let data = await useAxios().get(`/tasks/get/completed/user/${username}`).then(function (response) {
+            if (response.status == 200) {
+                return response.data;
+            }
+
+            return [];
+        });
+
+        return data as Array<Types.Task>;
     }
 
     return { media, achievements, authenticate, isAuthorized, getUsername, getId, getOtherProfile, sendFile, getAvatarUrl, loadAvatar, getAvatar };

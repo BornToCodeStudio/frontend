@@ -36,11 +36,11 @@ function getAllTasks() {
     tasksStore.value = useTaskStore().tasks 
 }
 
-onMounted(() => {
-    getTaskByLikesFilter()
+onMounted(async () => {
+    await useTaskStore().loadTasks();
+
+    getAllTasks();
 })
-
-
 
 </script>
 

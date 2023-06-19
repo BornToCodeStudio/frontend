@@ -10,7 +10,6 @@
             <div class="css-editor editor" v-show="optionType == 2" ref="cssDoc"></div>
             <div class="js-editor editor" v-show="optionType == 3" ref="jsDoc"></div>
             <div class="buttons">
-                <div class="upload__file">Загрузить файл</div>
                 <div class="preview" @click="preview()">Предпросмотр</div>
                 <div class="send__code" @click="check()">Отправить на проверку</div>
             </div>
@@ -18,7 +17,7 @@
         </div>
 
         <div class="info">
-            <span class="result" :class="{ true: result, false: !result }">Результат</span>
+            <span class="result" v-if="result">Вы успешно выполнили задание!</span>
             <span class="description">{{ currentTask?.fullDescription }}</span>
             <div class="comments">
             </div>
@@ -60,7 +59,7 @@ function loadTaskFromStore() {
         return;
     }
     
-    currentTask = toRef(task);
+    currentTask.value = task;
 };
 async function loadTask() {
     try {
@@ -137,10 +136,14 @@ async function solution() {
         });
     }
     catch (error) {
+        result.value = false;
+
         console.log(error)
     }
 
     if (!verify) {
+        result.value = false;
+
         router.push("/SignIn");
 
         return;
@@ -441,9 +444,8 @@ onMounted(() => {
             .result {
                 display: flex;
                 flex-direction: column;
-                border-radius: 15px;
                 text-align: center;
-                color: white;
+                color: rgb(36, 148, 36);
             }
 
             .description {

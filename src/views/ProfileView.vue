@@ -8,14 +8,10 @@ import Tasks from "../components/Task.vue";
 import 'swiper/css';
 
 import { useProfileStore } from '../stores/profile';
-import { useTaskStore } from '../stores/task';
-import { useAxios } from '@/stores/axios';
 import { computed, onMounted, onUpdated, ref, watch } from 'vue';
-import router from '@/router';
 import { useRoute } from 'vue-router';
 
 const profileStore = useProfileStore();
-const taskStore = useTaskStore();
 const selectedFile = ref<HTMLInputElement | null>(null);;
 
 let user = ref<Types.User | null>(null);
@@ -122,7 +118,7 @@ watch(useRoute(), async (from) => {
             </div>
         </div>  
         <div class="tasks d-flex flex-row justify-content-between gap-4 flex-wrap">
-                <Tasks class="task" v-bind:key="index" v-for="(task, index) in taskStore.tasks" 
+                <Tasks class="task" v-bind:key="index" v-for="(task, index) in user.tasks" 
                 :task="task" :taskFontSize="34" :taskLeft="50" :taskRight="50" :taskWidth="48.5"/>
         </div>
     </div>  
