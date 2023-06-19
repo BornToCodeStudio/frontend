@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Tasks from "../components/Task.vue";
 import { useTaskStore } from '../stores/task';
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 let tasksStore = ref(useTaskStore().tasks);
 let filter = ref(0);
@@ -14,30 +14,31 @@ const props = defineProps({
     }   
 })
 
-
 function getTaskByLanguageFilter(numb: number) {
     filter.value = numb + 1
 
-     tasksStore.value = useTaskStore().tasks.filter(f => f.languages[numb])
-
+    tasksStore.value = useTaskStore().tasks.filter(f => f.languages[numb])
 }
 
 function getTaskByLikesFilter() {
     subFilter.value = 0
+    tasksStore.value = useTaskStore().tasks.sort((a,b) => b.likes - a.likes)
 
-    tasksStore.value = tasksStore.value.sort((a,b) => b.likes - a.likes)
 }
 
 function getTaskByDate() {
     subFilter.value = 1
-
-    tasksStore.value = tasksStore.value.sort((a,b) => b.creationDate - a.creationDate)
+    tasksStore.value = useTaskStore().tasks.sort((a,b) => b.creationDate - a.creationDate)
 }
 
 function getAllTasks() {
     filter.value = 0;  
     tasksStore.value = useTaskStore().tasks 
 }
+
+onMounted(() => {
+    getTaskByLikesFilter()
+})
 
 
 

@@ -257,10 +257,10 @@ async function loadSolution() {
 };
 function createEditors(htmlText: string, cssText: string, jsText: string) {
     let theme = EditorView.theme({
-        ".cm-scroller": {"height":"450px"},
+        ".cm-scroller": {"height":"450px; background-color: rgb(214, 224, 240,0.1)"},
         ".cm-activeLine": {"background":"#D6E0F0;"},
-        ".cm-activeLineGutter": {"background-color":"#F1F3F8;"},
-        ".ͼi": {"color":"#FF570C"}
+        ".cm-activeLineGutter": {"background-color":"#8D93AB;"},
+        ".ͼi": {"color":"#8D93AB"},
     });
 
     htmlEditor.value = new EditorView({
@@ -354,7 +354,7 @@ onMounted(() => {
     .selected {
         @include option;
 
-        background-color: #ff7f44;
+        background-color: #8D93AB;
     }
 
     .task {
@@ -378,10 +378,10 @@ onMounted(() => {
                 .option {
                     @include option;
 
-                    background-color: #FF570C;
+                    background-color: #D6E0F0;
 
                     &:hover {
-                        background-color: #ff7f44;
+                        background-color: #8D93AB;
                     }
                 }
             }
@@ -394,7 +394,7 @@ onMounted(() => {
                 .upload__file {
                     border-radius: 15px;
                     border-width: 0px;
-                    background-color: #FF570C;
+                    background-color: #8D93AB;
                     color: white;
                     padding: 0.5em;
                     cursor: pointer;
@@ -404,7 +404,7 @@ onMounted(() => {
                     cursor: pointer;
                     border-radius: 15px;
                     border-width: 0px;
-                    background-color: #FF570C;
+                    background-color: #8D93AB;
 
                     color: white;
                     padding: 0.5em;
@@ -413,14 +413,14 @@ onMounted(() => {
                 .send__code {
                     border-radius: 15px;
                     border-width: 0px;
-                    background-color: #FF570C;
+                    background-color: #8D93AB;
                     color: white;
                     padding: 0.5em;
                     cursor: pointer;
                 }
 
                 .preview:hover, .upload__file:hover, .send__code:hover {
-                    background-color: #d45013;
+                    background-color: #D6E0F0;
                 }
             }
         }
@@ -448,7 +448,7 @@ onMounted(() => {
 
             .description {
                 border-radius: 15px;
-                background-color: #EFEFEF;
+                background-color: #D6E0F0;
                 padding: 15px;
                 height: 275px;
                 font-size: x-large;

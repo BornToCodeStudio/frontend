@@ -63,6 +63,7 @@ export const useTaskStore = defineStore('task', () => {
         id: 2,
         title: "wadwadw",
         author: "dateLastHTML",
+        authorId: 2,
         fullDescription: "Ваша первая задача",
         shortDescription: "Напишите код",
         codeExample: 'wadawdwa',
@@ -78,6 +79,7 @@ export const useTaskStore = defineStore('task', () => {
         id: 1,
         title: "wadwadw",
         author: "datePreLastCSS",
+        authorId: 2,
         fullDescription: "Ваша первая задача",
         shortDescription: "Напишите код",
         codeExample: 'wadawdwa',
@@ -93,6 +95,7 @@ export const useTaskStore = defineStore('task', () => {
         id: 1,
         title: "wadwadw",
         author: "datePreLastJs",
+        authorId: 2,
         fullDescription: "Ваша первая задача",
         shortDescription: "Напишите код",
         codeExample: 'wadawdwa',
@@ -104,5 +107,5 @@ export const useTaskStore = defineStore('task', () => {
             checkElementRules: htmlCheckElement.value
         }
     })
-    return { tasks };
+    return { tasks, getTask };
 })
