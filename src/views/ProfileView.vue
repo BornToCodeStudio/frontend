@@ -10,11 +10,19 @@ import 'swiper/css';
 import { useProfileStore } from '../stores/profile';
 import { useTaskStore } from '../stores/task';
 import { useAxios } from '@/stores/axios';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import router from '@/router';
+import { useRoute } from 'vue-router';
 
 const profileStore = useProfileStore();
 const taskStore = useTaskStore();
 const selectedFile = ref(File);
+
+let user = ref<Types.User | null>(null);
+
+onMounted(async () => {
+    user.value = await useProfileStore().getOtherProfile(Number(useRoute().params["id"]));
+});
 </script>
 
 <template>
@@ -23,7 +31,7 @@ const selectedFile = ref(File);
         <div class="profile-info d-flex flex-row">
             <div class="profile-column">
                 <div class="d-flex align-items-center gap-3">
-                    <h1 class="nickname display-5">Никнейм</h1>
+                    <h1 class="nickname display-5">{{ user?.name }}</h1>
                     <div class="avatar rounded-circle">
                         <span class="change-avater-text">Сменить аватарку</span>
                         <input id="file-input" class="select-file" type="file" ref="selectedFile">
